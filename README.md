@@ -12,6 +12,14 @@ Simply pick the `Open in GitHub` extension from the list
 
 ##Install Manual
 
+**Mac & Linux**
+```sh
+cd $HOME/.vscode/extensions
+git clone https://github.com/ziyasal/vscode-open-in-github.git
+cd vscode-open-in-github
+npm install
+```
+
 **Windows**
 ```
 cd "C:\Users\your username\.vscode\extensions"
@@ -19,10 +27,6 @@ git clone https://github.com/ziyasal/vscode-open-in-github.git
 cd vscode-open-in-github
 npm install
 ```
-
-**Ubuntu**
-
-**_TODO:_**
 
 ## Usage
 

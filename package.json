@@ -23,7 +23,6 @@
     "compile": "babel .\\src --out-dir .\\out --source-maps --watch"
   },
   "devDependencies": {
-    "babel": "^6.0.12",
     "vscode": "*"
   },
   "dependencies": {

@@ -22,7 +22,7 @@ npm install
 
 **Windows**
 ```
-cd "C:\Users\your username\.vscode\extensions"
+cd %USERPROFILE%\.vscode\extensions
 git clone https://github.com/ziyasal/vscode-open-in-github.git
 cd vscode-open-in-github
 npm install

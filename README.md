@@ -10,6 +10,20 @@ Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pic
 
 Simply pick the `Open in GitHub` extension from the list
 
+##Install Manual
+
+**Windows**
+```
+cd "C:\Users\your username\.vscode\extensions"
+git clone https://github.com/ziyasal/vscode-open-in-github.git
+cd vscode-open-in-github
+npm install
+```
+
+**Ubuntu**
+
+**_TODO:_**
+
 ## Usage
 
 Press <kbd>F1</kbd> and type `Open in GitHub`.

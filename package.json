@@ -20,9 +20,7 @@
   },
   "scripts": {
     "vscode:prepublish": "babel .\\src --out-dir .\\out --source-maps",
-    "vscode:prepublish-old": "node ./node_modules/vscode/bin/compile",
-    "compile-old": "node ./node_modules/vscode/bin/compile -watch -p ./",
-    "compile": "babel .\\src --out-dir .\\out --watch --source-maps"
+    "compile": "babel .\\src --out-dir .\\out --source-maps --watch"
   },
   "devDependencies": {
     "babel": "^6.0.12",

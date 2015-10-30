@@ -7,14 +7,14 @@
     "vscode": "*"
   },
   "activationEvents": [
-    "command:OpenInGithub"
+    "command:openInGitHub"
   ],
   "main": "./src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "openInGihub",
-        "title": "OpenInGithub"
+        "command": "openInGitHub",
+        "title": "Open in GitHub"
       }
     ]
   },

@@ -1,0 +1,36 @@
+{
+  "name": "vscode-open-in-github",
+  "description": "VsCode open in GitHub",
+  "version": "0.0.1",
+  "publisher": "ziyasal",
+  "engines": {
+    "vscode": "*"
+  },
+  "activationEvents": [
+    "command:OpenInGithub"
+  ],
+  "main": "./src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "openInGihub",
+        "title": "OpenInGithub"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "babel .\\src --out-dir .\\out --source-maps",
+    "vscode:prepublish-old": "node ./node_modules/vscode/bin/compile",
+    "compile-old": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "compile": "babel .\\src --out-dir .\\out --watch --source-maps"
+  },
+  "devDependencies": {
+    "babel": "^6.0.12",
+    "vscode": "*"
+  },
+  "dependencies": {
+    "github-url-from-git": "^1.4.0",
+    "parse-git-config": "^0.3.1",
+    "vscode": "^0.9.8"
+  }
+}

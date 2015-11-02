@@ -1,6 +1,6 @@
 {
   "name": "vscode-open-in-github",
-  "description": "VsCode open in GitHub",
+  "description": "Jump to a source code line in Github!",
   "version": "0.0.1",
   "publisher": "ziyasal",
   "engines": {
@@ -19,8 +19,8 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "babel .\\src --out-dir .\\out --source-maps",
-    "compile": "babel .\\src --out-dir .\\out --source-maps --watch"
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
   },
   "devDependencies": {
     "vscode": "*"

@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "publisher": "ziyasal",
   "engines": {
-    "vscode": "*"
-  },
+		"vscode": "0.10.x"
+	},
   "activationEvents": [
     "command:openInGitHub"
   ],

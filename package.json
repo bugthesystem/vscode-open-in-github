@@ -1,11 +1,27 @@
 {
   "name": "vscode-open-in-github",
+  "displayName": "Open in GitHub!",
   "description": "Jump to a source code line in Github!",
-  "version": "0.0.1",
+  "icon": "images/spellIcon.svg",
+  "icon": "images/icon.svg",
+  "version": "0.1.1",
   "publisher": "ziyasal",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "galleryBanner": {
+    "theme": "light"
+  },
+  "bugs": {
+    "url": "https://github.com/ziyasal/vscode-open-in-github/issues",
+    "email": "sarikayaziya@gmail.com"
+  },
+  "homepage": "https://github.com/ziyasal/vscode-open-in-github/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ziyasal/vscode-open-in-github.git"
+  },
   "engines": {
-		"vscode": "0.10.x"
-	},
+    "vscode": "0.10.x"
+  },
   "activationEvents": [
     "command:openInGitHub"
   ],
@@ -23,11 +39,12 @@
     "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
   },
   "devDependencies": {
+    "typescript": "^1.6.2",
     "vscode": "*"
   },
   "dependencies": {
     "github-url-from-git": "^1.4.0",
     "parse-git-config": "^0.3.1",
-    "vscode": "^0.9.8"
+    "vscode": "^0.10.3"
   }
 }

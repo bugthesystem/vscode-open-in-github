@@ -2,9 +2,8 @@
   "name": "vscode-open-in-github",
   "displayName": "Open in GitHub!",
   "description": "Jump to a source code line in Github!",
-  "icon": "images/spellIcon.svg",
-  "icon": "images/icon.svg",
-  "version": "0.1.1",
+  "icon": "images/icon_200.png",
+  "version": "0.1.5",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
@@ -19,6 +18,9 @@
     "type": "git",
     "url": "https://github.com/ziyasal/vscode-open-in-github.git"
   },
+  "categories": [
+		"Other"
+	],
   "engines": {
     "vscode": "0.10.x"
   },

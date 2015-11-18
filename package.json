@@ -3,7 +3,7 @@
   "displayName": "Open in GitHub!",
   "description": "Jump to a source code line in Github!",
   "icon": "images/icon_200.png",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
@@ -25,16 +25,22 @@
     "vscode": "0.10.x"
   },
   "activationEvents": [
-    "command:openInGitHub"
+    "onCommand:extension.openInGitHub"
   ],
   "main": "./src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "openInGitHub",
+        "command": "extension.openInGitHub",
         "title": "Open in GitHub"
       }
-    ]
+    ],
+		"keybindings": [{
+			"command": "extension.openInGitHub",
+			"key": "ctrl+o ctrl+g",
+			"mac": "ctrl+o ctrl+g",
+      "when":"editorTextFocus"
+		}]
   },
   "scripts": {
     "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
@@ -42,7 +48,7 @@
   },
   "devDependencies": {
     "typescript": "^1.6.2",
-    "vscode": "0.10.x"
+     "vscode": "0.10.1"
   },
   "dependencies": {
     "github-url-from-git": "^1.4.0",

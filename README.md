@@ -5,6 +5,8 @@
 
 ## Install
 
+**Tested with VsCode 0.10.1**  
+
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
 
 ![](https://raw.githubusercontent.com/ziyasal/vscode-open-in-github/master/screenshots/install.png)
@@ -31,14 +33,19 @@ npm install
 
 ## Usage
 
+**Command**  
+
 Press <kbd>F1</kbd> and type `Open in GitHub`.
 
 ![](https://raw.githubusercontent.com/ziyasal/vscode-open-in-github/master/screenshots/open-in-github.png)
 
+
+**Keybord Shortcut**  
+
+ Press <kbd>Ctrl+O</kbd> <kbd>Ctrl+G</kbd> to activate.
 
 Have fun..
 
 ## License
 
 MIT © [Ziya SARIKAYA @ziyasal](https://github.com/ziyasal)
-

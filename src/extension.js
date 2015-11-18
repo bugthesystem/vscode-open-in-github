@@ -23,33 +23,35 @@ function findBranch(config) {
     return "master";
 }
 
-function activate() {
-    var cwd = workspace.getPath();
+function openInGitHub() {
+    var cwd = workspace.rootPath;
+    
+    git({
+        cwd: cwd
+    }, function (err, config) {
 
-    commands.registerCommand('openInGitHub', function() {
+        var rawUrl = config['remote \"origin\"'].url;
 
-        git({
-            cwd: cwd
-        }, function(err, config) {
+        var lineIndex = 0;
+        var parsedUri = parse(rawUrl);
+        var branch = findBranch(config);
+        
+        var editor = Window.activeTextEditor;        
+        var selection = editor.selection;
+        var currentDocumentUri = JSON.stringify(editor._document._uri);
+        lineIndex = selection._active._line;
+        var projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
+        
+        var subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)
+            + projectName.length, currentDocumentUri.length).replace(/\"/g, "");
 
-            var rawUrl = config['remote \"origin\"'].url;
-            var lineIndex = 0;
-            var parsedUri = parse(rawUrl);
-            var branch = findBranch(config);
-            var editor = Window.getActiveTextEditor();
-            var selection = editor.getSelection();
-
-            var currentDocumentUri = JSON.stringify(editor._document._uri);
-            lineIndex = selection._active._line
-
-            var projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
-            var subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName) 
-                         + projectName.length, currentDocumentUri.length).replace(/\"/g, "");
-            var githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
-
-            exec("start " + githubLink);
-        });
+        var githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+        exec("start " + githubLink);
     });
+}
+
+function activate(context) {
+    context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitHub));
 }
 
 exports.activate = activate;

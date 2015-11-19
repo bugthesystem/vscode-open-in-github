@@ -3,7 +3,7 @@
   "displayName": "Open in GitHub!",
   "description": "Jump to a source code line in Github!",
   "icon": "images/icon_200.png",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
@@ -38,7 +38,7 @@
 		"keybindings": [{
 			"command": "extension.openInGitHub",
 			"key": "ctrl+o ctrl+g",
-			"mac": "ctrl+o ctrl+g",
+			"mac": "cmd+o cmd+g",
       "when":"editorTextFocus"
 		}]
   },

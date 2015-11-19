@@ -3,11 +3,11 @@
   "displayName": "Open in GitHub!",
   "description": "Jump to a source code line in Github!",
   "icon": "images/icon_200.png",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
-    "color": "#5c2d91",
+    "color": "#E9EBED",
     "theme": "light"
   },
   "homepage": "https://github.com/ziyasal/vscode-open-in-github/blob/master/README.md",

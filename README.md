@@ -1,7 +1,7 @@
-# vscode-open-in-github  
-![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub")
+# vscode-open-in-github + bitbucket 
+![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket")
 
-> Extension for Visual Studio Code which can be used to jump to a source code line in Github
+> Extension for Visual Studio Code which can be used to jump to a source code line in Github / Bitbucket
 
 ## Install
 
@@ -11,7 +11,7 @@ Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pic
 
 ![](https://raw.githubusercontent.com/ziyasal/vscode-open-in-github/master/screenshots/install.png)
 
-Simply pick the `Open in GitHub` extension from the list
+Simply pick the `Open in GitHub / Bitbucket` extension from the list
 
 ##Install Manual
 

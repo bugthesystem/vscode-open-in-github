@@ -1,9 +1,9 @@
 {
   "name": "vscode-open-in-github",
-  "displayName": "Open in GitHub!",
-  "description": "Jump to a source code line in Github!",
+  "displayName": "Open in GitHub / Bitbucket!",
+  "description": "Jump to a source code line in Github / Bitbucket!",
   "icon": "images/icon_200.png",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {

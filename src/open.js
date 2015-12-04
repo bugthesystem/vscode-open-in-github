@@ -1,4 +1,4 @@
-# https://www.npmjs.com/package/open
+// https://www.npmjs.com/package/open
 
 var exec = require('child_process').exec
   , path = require('path')

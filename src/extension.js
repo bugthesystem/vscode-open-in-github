@@ -12,6 +12,7 @@ var fs = require('fs');
 var git = require('parse-git-config');
 var exec = require('child_process').exec;
 var parse = require('github-url-from-git');
+var open = require('open');
 
 function findBranch(config) {
     for (var prop in config) {
@@ -54,7 +55,7 @@ function openInGitHub() {
             githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
         }
 
-        exec("start " + githubLink);
+        open(githubLink);
     });
 }
 

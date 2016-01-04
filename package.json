@@ -3,7 +3,7 @@
   "displayName": "Open in GitHub / Bitbucket!",
   "description": "Jump to a source code line in Github / Bitbucket!",
   "icon": "images/icon_200.png",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
@@ -37,8 +37,8 @@
     ],
 		"keybindings": [{
 			"command": "extension.openInGitHub",
-			"key": "ctrl+o ctrl+g",
-			"mac": "cmd+o cmd+g",
+			"key": "ctrl+l g",
+			"mac": "ctrl+l g",
       "when":"editorTextFocus"
 		}]
   },

@@ -42,7 +42,7 @@ Press <kbd>F1</kbd> and type `Open in GitHub`.
 
 **Keybord Shortcut**  
 
- Press <kbd>Ctrl+O</kbd> <kbd>Ctrl+G</kbd> to activate.
+ Press <kbd>Ctrl+O</kbd> <kbd>Ctrl+L G</kbd> to activate.
 
 Have fun..
 

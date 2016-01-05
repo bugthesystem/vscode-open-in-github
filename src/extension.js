@@ -26,44 +26,54 @@ function findBranch(config) {
 
 function openInGitHub() {
     var cwd = workspace.rootPath;
-    
+
     git({
         cwd: cwd
     }, function (err, config) {
+        var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection, currentDocumentUri
+            , projectName, subdir, gitLink, scUrls;
 
-        var rawUrl = config['remote \"origin\"'].url;
-        var opt = {
-            extraBaseUrls : ['bitbucket.org']
+        scUrls = {
+            github: 'https://github.com',
+            bitbucket: 'https://bitbucket.org',
+            visualstudiocom: /^https:\/\/[\w\d-]*\.visualstudio.com\//
         }
-        rawUrl = rawUrl.replace('bitbucket.org:', 'bitbucket.org/')
-        var lineIndex = 0;
-        var parsedUri = parse(rawUrl, opt);
-        if (!parsedUri){
-            parsedUri = rawUrl;
+
+        editor = Window.activeTextEditor;
+        selection = editor.selection;
+
+        rawUri = config['remote \"origin\"'].url;
+        parseOpts = {
+            extraBaseUrls: ['bitbucket.org']
         }
-        var branch = findBranch(config);
-        
-        var editor = Window.activeTextEditor;        
-        var selection = editor.selection;
-        var currentDocumentUri = JSON.stringify(editor._document._uri);
+
+        rawUri = rawUri.replace('bitbucket.org:', 'bitbucket.org/')
+
+        parsedUri = parse(rawUri, parseOpts);
+        if (!parsedUri) {
+            parsedUri = rawUri;
+        }
+
+        branch = findBranch(config);
+        currentDocumentUri = JSON.stringify(editor._document._uri);
         lineIndex = selection._active._line;
-        var projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
-        
-        var subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)
+        projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
+
+        subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)
             + projectName.length, currentDocumentUri.length).replace(/\"/g, "");
-        var githubLink;
-        if (parsedUri.startsWith("https://github.com")) {
-            githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
-        } else if (parsedUri.startsWith("https://bitbucket.org")) {
-            githubLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
+
+        if (parsedUri.startsWith(scUrls.github)) {
+            gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+        } else if (parsedUri.startsWith(scUrls.bitbucket)) {
+            gitLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
+        } else if (scUrls.visualstudiocom.test(parsedUri)) {
+            gitLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
         } else {
-            var vsts = /^https:\/\/[\w\d-]*\.visualstudio.com\//.test(parsedUri);
-            if (vsts) {
-                githubLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
-            }
+            Window.showWarningMessage('Unknown Git provider.');
         }
 
-        open(githubLink);
+        if (gitLink)
+            open(gitLink);
     });
 }
 

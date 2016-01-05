@@ -38,6 +38,9 @@ function openInGitHub() {
         rawUrl = rawUrl.replace('bitbucket.org:', 'bitbucket.org/')
         var lineIndex = 0;
         var parsedUri = parse(rawUrl, opt);
+        if (!parsedUri){
+            parsedUri = rawUrl;
+        }
         var branch = findBranch(config);
         
         var editor = Window.activeTextEditor;        
@@ -49,10 +52,15 @@ function openInGitHub() {
         var subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)
             + projectName.length, currentDocumentUri.length).replace(/\"/g, "");
         var githubLink;
-        if (parsedUri.startsWith("https://bitbucket.org")) {
+        if (parsedUri.startsWith("https://github.com")) {
+            githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+        } else if (parsedUri.startsWith("https://bitbucket.org")) {
             githubLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
         } else {
-            githubLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+            var vsts = /^https:\/\/[\w\d-]*\.visualstudio.com\//.test(parsedUri);
+            if (vsts) {
+                githubLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
+            }
         }
 
         open(githubLink);

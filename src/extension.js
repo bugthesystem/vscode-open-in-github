@@ -30,7 +30,7 @@ function openInGitHub() {
     git({
         cwd: cwd
     }, function (err, config) {
-        var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection, currentDocumentUri
+        var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection
             , projectName, subdir, gitLink, scUrls;
 
         scUrls = {
@@ -55,12 +55,10 @@ function openInGitHub() {
         }
 
         branch = findBranch(config);
-        currentDocumentUri = JSON.stringify(editor._document._uri);
-        lineIndex = selection._active._line;
+        lineIndex = selection.active.line + 1;
         projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-        subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)
-            + projectName.length, currentDocumentUri.length).replace(/\"/g, "");
+        subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
 
         if (parsedUri.startsWith(scUrls.github)) {
             gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;

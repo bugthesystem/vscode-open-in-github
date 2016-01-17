@@ -55,8 +55,8 @@ function openInGitHub() {
         }
 
         branch = findBranch(config);
-        currentDocumentUri = JSON.stringify(editor._document._uri);
-        lineIndex = selection._active._line;
+        currentDocumentUri = JSON.stringify(editor.document.uri);
+        lineIndex = selection.active.line;
         projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
         subdir = currentDocumentUri.substring(currentDocumentUri.indexOf(projectName)

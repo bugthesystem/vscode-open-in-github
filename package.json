@@ -3,7 +3,7 @@
     "displayName": "Open in GitHub / Bitbucket!",
     "description": "Jump to a source code line in Github / Bitbucket!",
     "icon": "images/icon_200.png",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "publisher": "ziyasal",
     "license": "SEE LICENSE IN LICENSE.md",
     "galleryBanner": {

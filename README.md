@@ -1,6 +1,4 @@
-# vscode-open-in-github
-
-github + bitbucket + visualstudio.com
+**vscode-open-in-github + bitbucket + visualstudio.com**
 ![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")
 
 > Extension for Visual Studio Code which can be used to jump to a source code line in Github / Bitbucket

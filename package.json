@@ -1,9 +1,9 @@
 {
     "name": "vscode-open-in-github",
-    "displayName": "Open in GitHub / Bitbucket!",
-    "description": "Jump to a source code line in Github / Bitbucket!",
+    "displayName": "Open in GitHub / Bitbucket / VisualStudio.com !",
+    "description": "Jump to a source code line in Github / Bitbucket / VisualStudio.com !",
     "icon": "images/icon_200.png",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "publisher": "ziyasal",
     "license": "SEE LICENSE IN LICENSE.md",
     "galleryBanner": {
@@ -39,8 +39,7 @@
             {
                 "command": "extension.openInGitHub",
                 "key": "ctrl+l g",
-                "mac": "ctrl+l g",
-                "when": "editorTextFocus"
+                "mac": "ctrl+l g"
             }
         ]
     },

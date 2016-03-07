@@ -39,9 +39,6 @@ function openInGitHub() {
             visualstudiocom: /^https:\/\/[\w\d-]*\.visualstudio.com\//
         }
 
-        editor = Window.activeTextEditor;
-        selection = editor.selection;
-
         rawUri = config['remote \"origin\"'].url;
         parseOpts = {
             extraBaseUrls: ['bitbucket.org']
@@ -55,19 +52,26 @@ function openInGitHub() {
         }
 
         branch = findBranch(config);
-        lineIndex = selection.active.line + 1;
-        projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
+        editor = Window.activeTextEditor;
+        if (editor) {
+            selection = editor.selection;
 
-        subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+            lineIndex = selection.active.line + 1;
+            projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-        if (parsedUri.startsWith(scUrls.github)) {
-            gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
-        } else if (parsedUri.startsWith(scUrls.bitbucket)) {
-            gitLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
-        } else if (scUrls.visualstudiocom.test(parsedUri)) {
-            gitLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
+            subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+
+            if (parsedUri.startsWith(scUrls.github)) {
+                gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+            } else if (parsedUri.startsWith(scUrls.bitbucket)) {
+                gitLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
+            } else if (scUrls.visualstudiocom.test(parsedUri)) {
+                gitLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
+            } else {
+                Window.showWarningMessage('Unknown Git provider.');
+            }
         } else {
-            Window.showWarningMessage('Unknown Git provider.');
+            gitLink = gitLink = parsedUri + "/tree/" + branch;
         }
 
         if (gitLink)

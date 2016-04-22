@@ -25,7 +25,8 @@
         "vscode": "0.10.x"
     },
     "activationEvents": [
-        "onCommand:extension.openInGitHub"
+        "onCommand:extension.openInGitHub",
+        "onCommand:extension.copyGitHubLinkToClipboard"
     ],
     "main": "./src/extension",
     "contributes": {
@@ -33,6 +34,10 @@
             {
                 "command": "extension.openInGitHub",
                 "title": "Open in GitHub"
+            },
+            {
+                "command": "extension.copyGitHubLinkToClipboard",
+                "title": "Copy GitHub link to clipboard"
             }
         ],
         "keybindings": [
@@ -40,6 +45,11 @@
                 "command": "extension.openInGitHub",
                 "key": "ctrl+l g",
                 "mac": "ctrl+l g"
+            },
+            {
+                "command": "extension.copyGitHubLinkToClipboard",
+                "key": "ctrl+l c",
+                "mac": "ctrl+l c"
             }
         ]
     },
@@ -52,6 +62,7 @@
         "vscode": "0.10.1"
     },
     "dependencies": {
+        "copy-paste": "^1.1.4",
         "github-url-from-git": "^1.4.0",
         "parse-git-config": "^0.3.1"
     }

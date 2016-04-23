@@ -13,6 +13,7 @@ var git = require('parse-git-config');
 var exec = require('child_process').exec;
 var parse = require('github-url-from-git');
 var open = require('./open');
+var copy = require('copy-paste').copy
 
 function findBranch(config) {
     for (var prop in config) {
@@ -24,7 +25,7 @@ function findBranch(config) {
     return "master";
 }
 
-function openInGitHub() {
+function getGitHubLink(cb) {
     var cwd = workspace.rootPath;
 
     git({
@@ -75,12 +76,21 @@ function openInGitHub() {
         }
 
         if (gitLink)
-            open(gitLink);
+            cb(gitLink);
     });
+}
+
+function openInGitHub() {
+	getGitHubLink(open);
+}
+
+function copyGitHubLinkToClipboard() {
+	getGitHubLink(copy);
 }
 
 function activate(context) {
     context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitHub));
+    context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitHubLinkToClipboard));
 }
 
 exports.activate = activate;

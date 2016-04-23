@@ -10,20 +10,10 @@ var Position = VsCode.Position;
 var path = require('path');
 var fs = require('fs');
 var git = require('parse-git-config');
-var exec = require('child_process').exec;
 var parse = require('github-url-from-git');
 var open = require('./open');
 var copy = require('copy-paste').copy
-
-function findBranch(config) {
-    for (var prop in config) {
-        if (prop.indexOf("branch \"") > -1) {
-            return prop.replace(/branch \"/g, "").replace(/\"/g, "");
-        }
-    }
-
-    return "master";
-}
+var gitRev = require('git-rev-2');
 
 function getGitHubLink(cb) {
     var cwd = workspace.rootPath;
@@ -52,31 +42,34 @@ function getGitHubLink(cb) {
             parsedUri = rawUri;
         }
 
-        branch = findBranch(config);
-        editor = Window.activeTextEditor;
-        if (editor) {
-            selection = editor.selection;
+        gitRev.branch( cwd, function (branchErr, branch) {
+            if (branchErr || !branch)
+                branch = 'master';
+            editor = Window.activeTextEditor;
+            if (editor) {
+                selection = editor.selection;
 
-            lineIndex = selection.active.line + 1;
-            projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
+                lineIndex = selection.active.line + 1;
+                projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-            subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+                subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
 
-            if (parsedUri.startsWith(scUrls.github)) {
-                gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
-            } else if (parsedUri.startsWith(scUrls.bitbucket)) {
-                gitLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
-            } else if (scUrls.visualstudiocom.test(parsedUri)) {
-                gitLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
+                if (parsedUri.startsWith(scUrls.github)) {
+                    gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
+                } else if (parsedUri.startsWith(scUrls.bitbucket)) {
+                    gitLink = parsedUri + "/src/" + branch + subdir + "#cl-" + lineIndex;
+                } else if (scUrls.visualstudiocom.test(parsedUri)) {
+                    gitLink = parsedUri + "#path=" + subdir + "&version=GB" + branch;
+                } else {
+                    Window.showWarningMessage('Unknown Git provider.');
+                }
             } else {
-                Window.showWarningMessage('Unknown Git provider.');
+                gitLink = gitLink = parsedUri + "/tree/" + branch;
             }
-        } else {
-            gitLink = gitLink = parsedUri + "/tree/" + branch;
-        }
 
         if (gitLink)
             cb(gitLink);
+        });
     });
 }
 

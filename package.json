@@ -40,6 +40,19 @@
                 "title": "Copy GitHub link to clipboard"
             }
         ],
+    "configuration": {
+      "type": "object",
+      "title": "Open in Github extension configuration",
+      "properties": {
+        "openInGitHub.gitHubAddress": {
+          "type": [
+            "string"
+          ],
+          "default": "https:\/\/github.com",
+          "description": "GitHub server address. Modify this setting in your workspace settings of projects using custom GitHub server"
+        }
+      }
+    },
         "keybindings": [
             {
                 "command": "extension.openInGitHub",

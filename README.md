@@ -45,7 +45,8 @@ Press <kbd>F1</kbd> and type `Open in GitHub`.
  Press <kbd>Ctrl+L G</kbd> to activate.
  Press <kbd>Ctrl+L C</kbd> to copy active line link to clipboard.
  
- **configure custom github server url**  
+ **Configure custom github server url**  
+ 
  Add follolowing line into workspace settings 
  ```json
 {

@@ -47,7 +47,7 @@ Press <kbd>F1</kbd> and type `Open in GitHub`.
  
  **Configure custom github server url**  
  
- Add follolowing line into workspace settings 
+ Add following line into workspace settings; 
  ```json
 {
 	"openInGitHub.gitHubAddress":"your custom github url here"

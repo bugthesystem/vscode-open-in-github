@@ -22,10 +22,11 @@ function getGitHubLink(cb) {
         cwd: cwd
     }, function (err, config) {
         var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection
-            , projectName, subdir, gitLink, scUrls;
+            , projectName, subdir, gitLink, scUrls, workspaceConfiguration;
 
+        workspaceConfiguration = VsCode.workspace.getConfiguration("openInGitHub");
         scUrls = {
-            github: 'https://github.com',
+            github: workspaceConfiguration.gitHubAddress,
             bitbucket: 'https://bitbucket.org',
             visualstudiocom: /^https:\/\/[\w\d-]*\.visualstudio.com\//
         }

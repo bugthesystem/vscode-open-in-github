@@ -45,12 +45,12 @@ Press <kbd>F1</kbd> and type `Open in GitHub`.
  Press <kbd>Ctrl+L G</kbd> to activate.
  Press <kbd>Ctrl+L C</kbd> to copy active line link to clipboard.
  
- **Configure custom github server url**  
+ **Configure custom github domain**  
  
  Add following line into workspace settings; 
  ```json
 {
-	"openInGitHub.gitHubAddress":"your custom github url here"
+	"openInGitHub.gitHubDomain":"your custom github domain here"
 }
 ```  
 Have fun..

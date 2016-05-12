@@ -26,14 +26,17 @@ function getGitHubLink(cb) {
 
         workspaceConfiguration = VsCode.workspace.getConfiguration("openInGitHub");
         scUrls = {
-            github: workspaceConfiguration.gitHubAddress,
+            github: 'https://' + workspaceConfiguration.gitHubDomain,
             bitbucket: 'https://bitbucket.org',
             visualstudiocom: /^https:\/\/[\w\d-]*\.visualstudio.com\//
         }
 
         rawUri = config['remote \"origin\"'].url;
         parseOpts = {
-            extraBaseUrls: ['bitbucket.org']
+            extraBaseUrls: [
+                'bitbucket.org',
+                workspaceConfiguration.gitHubDomain
+            ]
         }
 
         rawUri = rawUri.replace('bitbucket.org:', 'bitbucket.org/')

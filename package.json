@@ -44,12 +44,12 @@
       "type": "object",
       "title": "Open in Github extension configuration",
       "properties": {
-        "openInGitHub.gitHubAddress": {
+        "openInGitHub.gitHubDomain": {
           "type": [
             "string"
           ],
-          "default": "https:\/\/github.com",
-          "description": "GitHub server address. Modify this setting in your workspace settings of projects using custom GitHub server"
+          "default": "github.com",
+          "description": "Configure a custom Github domain. Useful for Github entreprise"
         }
       }
     },

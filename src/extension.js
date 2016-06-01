@@ -11,7 +11,7 @@ var path = require('path');
 var fs = require('fs');
 var git = require('parse-git-config');
 var parse = require('github-url-from-git');
-var open = require('./open');
+var open = require('open');
 var copy = require('copy-paste').copy
 var gitRev = require('git-rev-2');
 

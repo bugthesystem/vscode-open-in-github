@@ -14,25 +14,12 @@ var parse = require('github-url-from-git');
 var open = require('open');
 var copy = require('copy-paste').copy
 var gitRev = require('git-rev-2');
-var process = require('child_process');
 
 function getGitHubLink(cb) {
     var cwd = workspace.rootPath;
-    var repoRootDirectory = null;
-    var repoRelativePath = "";
-    
-    try {
-      // determine the associated git repo: if cwd is not a git repo, we will search up until we find one
-      repoRootDirectory = process.execSync('git rev-parse --show-toplevel', { cwd: cwd }).toString().replace('\n','');
-      // if repo root is not cwd, repoRelativePath will be the path relative path to get from repo root to workspace root
-      repoRelativePath = cwd.replace(repoRootDirectory, "");
-    } catch (ex) {
-      // error: just use cwd
-      repoRootDirectory = cwd;
-    }
 
     git({
-        cwd: repoRootDirectory
+        cwd: cwd
     }, function (err, config) {
         var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection
             , projectName, subdir, gitLink, scUrls, workspaceConfiguration;
@@ -59,7 +46,7 @@ function getGitHubLink(cb) {
             parsedUri = rawUri;
         }
 
-        gitRev.branch(repoRootDirectory, function (branchErr, branch) {
+        gitRev.branch( cwd, function (branchErr, branch) {
             if (branchErr || !branch)
                 branch = 'master';
             editor = Window.activeTextEditor;
@@ -69,7 +56,7 @@ function getGitHubLink(cb) {
                 lineIndex = selection.active.line + 1;
                 projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-                subdir = repoRelativePath + editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+                subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
 
                 if (parsedUri.startsWith(scUrls.github)) {
                     gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;

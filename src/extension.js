@@ -14,12 +14,14 @@ var parse = require('github-url-from-git');
 var open = require('open');
 var copy = require('copy-paste').copy
 var gitRev = require('git-rev-2');
+var findParentDir = require('find-parent-dir');
 
 function getGitHubLink(cb) {
     var cwd = workspace.rootPath;
-
+    var repoDir = findParentDir.sync(workspace.rootPath, '.git') || cwd;
+    
     git({
-        cwd: cwd
+        cwd: repoDir
     }, function (err, config) {
         var rawUri, parseOpts, lineIndex = 0, parsedUri, branch, editor, selection
             , projectName, subdir, gitLink, scUrls, workspaceConfiguration;
@@ -46,7 +48,7 @@ function getGitHubLink(cb) {
             parsedUri = rawUri;
         }
 
-        gitRev.branch( cwd, function (branchErr, branch) {
+        gitRev.branch(repoDir, function (branchErr, branch) {
             if (branchErr || !branch)
                 branch = 'master';
             editor = Window.activeTextEditor;
@@ -56,8 +58,14 @@ function getGitHubLink(cb) {
                 lineIndex = selection.active.line + 1;
                 projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-                subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
-
+                if (repoDir === cwd) {
+                    // The workspace directory is the git repo folder
+                    subdir = editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+                } else {
+                    // The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
+                    var repoRelativePath = cwd.replace(repoDir, "/");
+                    subdir = repoRelativePath + editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+                }
                 if (parsedUri.startsWith(scUrls.github)) {
                     gitLink = parsedUri + "/blob/" + branch + subdir + "#L" + lineIndex;
                 } else if (parsedUri.startsWith(scUrls.bitbucket)) {

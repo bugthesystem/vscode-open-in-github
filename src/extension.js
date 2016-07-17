@@ -104,10 +104,9 @@ function getGitHubLinkForRepo(cb) {
     getGitHubLink(cb);
 }
 
-function branchOnCallingContext(contexMenuParam, cb){
-    if (contexMenuParam !== undefined) {
-        fileFsPath = contexMenuParam._fsPath;
-        getGitHubLinkForFile(fileFsPath, cb);
+function branchOnCallingContext(args, cb){
+    if (args && args.fsPath) {
+        getGitHubLinkForFile(args.fsPath, cb);
     }
     else if (Window.activeTextEditor) {
         getGitHubLinkForCurrentEditorLine(cb);
@@ -117,12 +116,12 @@ function branchOnCallingContext(contexMenuParam, cb){
     }
 }
 
-function openInGitHub(contexMenuParam) {
-    branchOnCallingContext(contexMenuParam, open);
+function openInGitHub(args) {
+    branchOnCallingContext(args, open);
 }
 
-function copyGitHubLinkToClipboard(contexMenuParam) {
-    branchOnCallingContext(contexMenuParam, copy);
+function copyGitHubLinkToClipboard(args) {
+    branchOnCallingContext(args, copy);
 }
 
 function activate(context) {

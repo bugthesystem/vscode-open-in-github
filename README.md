@@ -9,7 +9,7 @@
 
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
 
-![](https://raw.githubusercontent.com/ziyasal/vscode-open-in-github/master/screenshots/install.png)
+![](screenshots/install.png?raw=true)
 
 Simply pick the `Open in GitHub / Bitbucket` extension from the list
 
@@ -37,15 +37,24 @@ npm install
 
 Press <kbd>F1</kbd> and type `Open in GitHub`.
 
-![](https://raw.githubusercontent.com/ziyasal/vscode-open-in-github/master/screenshots/open-in-github.png)
+![](screenshots/open-in-github.png?raw=true)
 
+Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
+
+![](screenshots/copy.png?raw=true)
 
 **Keybord Shortcut**  
 
  Press <kbd>Ctrl+L G</kbd> to activate.
  Press <kbd>Ctrl+L C</kbd> to copy active line link to clipboard.
  
- **Configure custom github domain**  
+**Context menu**  
+
+Right click on explorer item and choose `Open in GitHub` or `Copy GitHub link to clipboard`.
+
+![](screenshots/context-menu.png?raw=true)
+
+**Configure custom github domain**  
  
  Add following line into workspace settings; 
  ```json

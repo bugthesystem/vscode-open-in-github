@@ -3,7 +3,7 @@
     "displayName": "Open in GitHub / Bitbucket / VisualStudio.com !",
     "description": "Jump to a source code line in Github / Bitbucket / VisualStudio.com !",
     "icon": "images/icon_200.png",
-    "version": "1.1.2",
+    "version": "1.2.1",
     "publisher": "ziyasal",
     "license": "SEE LICENSE IN LICENSE.md",
     "galleryBanner": {
@@ -40,19 +40,19 @@
                 "title": "Copy GitHub link to clipboard"
             }
         ],
-    "configuration": {
-      "type": "object",
-      "title": "Open in Github extension configuration",
-      "properties": {
-        "openInGitHub.gitHubDomain": {
-          "type": [
-            "string"
-          ],
-          "default": "github.com",
-          "description": "Configure a custom Github domain. Useful for Github entreprise"
-        }
-      }
-    },
+        "configuration": {
+            "type": "object",
+            "title": "Open in Github extension configuration",
+            "properties": {
+                "openInGitHub.gitHubDomain": {
+                    "type": [
+                        "string"
+                    ],
+                    "default": "github.com",
+                    "description": "Configure a custom Github domain. Useful for Github entreprise"
+                }
+            }
+        },
         "keybindings": [
             {
                 "command": "extension.openInGitHub",
@@ -64,7 +64,17 @@
                 "key": "ctrl+l c",
                 "mac": "ctrl+l c"
             }
-        ]
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.openInGitHub"
+                },
+                {
+                    "command": "extension.copyGitHubLinkToClipboard"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
@@ -72,7 +82,7 @@
     },
     "devDependencies": {
         "typescript": "^1.6.2",
-        "vscode": "0.10.1"
+        "vscode": "0.11.13"
     },
     "dependencies": {
         "copy-paste": "^1.1.4",

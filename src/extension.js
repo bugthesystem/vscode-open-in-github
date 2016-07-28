@@ -71,14 +71,14 @@ function getGitHubLink(cb, fileFsPath, line) {
 
             projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
 
-			if (repoDir === cwd) {
-				// The workspace directory is the git repo folder
-				subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
-			} else {
-				// The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
-				var repoRelativePath = cwd.replace(repoDir, "/");
-				subdir = repoRelativePath + editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
-			}
+            if (repoDir === cwd) {
+                // The workspace directory is the git repo folder
+                subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
+            } else {
+                // The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
+                var repoRelativePath = cwd.replace(repoDir, "/");
+                subdir = repoRelativePath + editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
+            }
 
             if (parsedUri.startsWith(scUrls.github)) {
                 gitLink = formGitHubLink(parsedUri, branch, subdir, line);
@@ -93,7 +93,7 @@ function getGitHubLink(cb, fileFsPath, line) {
             if (gitLink)
                 cb(gitLink);
         });
-	});
+    });
 }
 
 function getGitHubLinkForFile(fileFsPath, cb) {

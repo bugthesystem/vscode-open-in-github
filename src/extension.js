@@ -70,15 +70,13 @@ function getGitHubLink(cb, fileFsPath, line) {
                 branch = 'master';
 
             projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
+			subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
 
-            if (repoDir === cwd) {
-                // The workspace directory is the git repo folder
-                subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
-            } else {
+            if (repoDir !== cwd) {
                 // The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
                 var repoRelativePath = cwd.replace(repoDir, "/");
-                subdir = repoRelativePath + editor.document.uri.fsPath.substring(workspace.rootPath.length).replace(/\"/g, "");
-            }
+                subdir = repoRelativePath + subdir;
+			}
 
             if (parsedUri.startsWith(scUrls.github)) {
                 gitLink = formGitHubLink(parsedUri, branch, subdir, line);

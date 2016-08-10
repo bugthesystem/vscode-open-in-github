@@ -9,7 +9,7 @@
 
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
 
-![](screenshots/install.png?raw=true)
+![installation](screenshots/install.png?raw=true "installation")
 
 Simply pick the `Open in GitHub / Bitbucket` extension from the list
 
@@ -37,11 +37,11 @@ npm install
 
 Press <kbd>F1</kbd> and type `Open in GitHub`.
 
-![](screenshots/open-in-github.png?raw=true)
+![open](screenshots/open-in-github.png?raw=true "Open function")
 
 Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
 
-![](screenshots/copy.png?raw=true)
+![copy](screenshots/copy.png?raw=true "Copy function")
 
 **Keybord Shortcut**  
 
@@ -52,7 +52,7 @@ Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
 
 Right click on explorer item and choose `Open in GitHub` or `Copy GitHub link to clipboard`.
 
-![](screenshots/context-menu.png?raw=true)
+![context](screenshots/context-menu.png?raw=true "Context menu options")
 
 **Configure custom github domain**  
  

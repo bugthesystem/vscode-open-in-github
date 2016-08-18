@@ -3,6 +3,8 @@
 
 > Extension for Visual Studio Code which can be used to jump to a source code line in Github / Bitbucket
 
+[![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github)
+
 ## Install
 
 **Tested with VsCode 0.10.1**  

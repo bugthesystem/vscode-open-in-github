@@ -78,9 +78,14 @@
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "test:linuxOSX": "CODE_TESTS_WORKSPACE=$(cd \"$(dirname \"$0\")\" && pwd -P)/test/sampleTestData node ./node_modules/vscode/bin/test ",
+        "test:windows": "cd && code -n %CD%/test/sampleTestData --extensionDevelopmentPath=%CD% --extensionTestsPath=%CD%/test --verbose",
+        "test": "node ./testScript",
+        "postinstall": "node ./node_modules/vscode/bin/install"
     },
     "devDependencies": {
+        "chai": "^3.5.0",
         "typescript": "^1.6.2",
         "vscode": "0.11.13"
     },

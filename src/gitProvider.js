@@ -41,6 +41,9 @@ class Bitbucket extends BaseProvider {
     }
 }
 
+class GitLab extends GitHub {
+}
+
 class VisualStudio extends BaseProvider {
     get baseUrl() {
         return `https://${this.gitUrl.resource}${this.gitUrl.pathname}`.replace(/\.git/, '');
@@ -65,6 +68,7 @@ const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomai
 const providers = {
     [gitHubDomain]: GitHub,
     'bitbucket.org': Bitbucket,
+    'gitlab.com': GitLab,
     'visualstudio.com': VisualStudio,
 };
 

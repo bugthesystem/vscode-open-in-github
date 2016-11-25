@@ -96,6 +96,48 @@ suite('gitProvider', function () {
         });
     });
 
+    suite('GitLab', function () {
+        const remoteUrl = `https://gitlab.com/${userName}/${repoName}.git`;
+        const provider = gitProvider(remoteUrl);
+
+        suite('#webUrl(branch, filePath)', function () {
+            test('should returns file URL', function () {
+                const expectedUrl = `https://gitlab.com/${userName}/${repoName}/blob/${branch}${filePath}`;
+                const webUrl = provider.webUrl(branch, filePath);
+                expect(webUrl).to.equal(expectedUrl);
+            });
+        });
+
+        suite('#webUrl(branch, filePath, line)', function () {
+            test('should returns file URL with line hash', function () {
+                const expectedUrl = `https://gitlab.com/${userName}/${repoName}/blob/${branch}${filePath}#L${line}`;
+                const webUrl = provider.webUrl(branch, filePath, line);
+                expect(webUrl).to.equal(expectedUrl);
+            });
+        });
+
+        suite('#webUrl(branch)', function () {
+            test('should returns repository root URL', function () {
+                const expectedUrl = `https://gitlab.com/${userName}/${repoName}/tree/${branch}`;
+                const webUrl = provider.webUrl(branch);
+                expect(webUrl).to.equal(expectedUrl);
+            });
+        });
+
+        suite('with ssh remote URL', function () {
+            const remoteUrl = `git@gitlab.com:${userName}/${repoName}.git`;
+            const provider = gitProvider(remoteUrl);
+
+            suite('#webUrl(branch, filePath)', function () {
+                test('should returns HTTPS URL', function () {
+                    const expectedUrl = `https://gitlab.com/${userName}/${repoName}/blob/${branch}${filePath}`;
+                    const webUrl = provider.webUrl(branch, filePath);
+                    expect(webUrl).to.equal(expectedUrl);
+                });
+            });
+        });
+    });
+
     suite('VisualStudio', function () {
         const projectName = 'testProject';
         const remoteUrl = `https://test-account.visualstudio.com/${projectName}/_git/${repoName}.git`;

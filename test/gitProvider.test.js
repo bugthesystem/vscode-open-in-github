@@ -2,6 +2,7 @@
 
 const querystring = require('querystring');
 const expect = require('chai').expect;
+const proxyquire = require('proxyquire');
 
 const gitProvider = require('../src/gitProvider');
 
@@ -47,6 +48,33 @@ suite('gitProvider', function () {
             suite('#webUrl(branch, filePath)', function () {
                 test('should returns HTTPS URL', function () {
                     const expectedUrl = `https://github.com/${userName}/${repoName}/blob/${branch}${filePath}`;
+                    const webUrl = provider.webUrl(branch, filePath);
+                    expect(webUrl).to.equal(expectedUrl);
+                });
+            });
+        });
+
+        suite('with custom domain', function () {
+            const testDomain = 'github.testdomain.com';
+            const remoteUrl = `https://${testDomain}/${userName}/${repoName}.git`;
+
+            const fakeVscode = {
+                workspace: {
+                    getConfiguration: function () {
+                        return {
+                            get: function () {
+                                return testDomain;
+                            },
+                        };
+                    },
+                },
+            };
+            const gitProvider = proxyquire('../src/gitProvider.js', { vscode: fakeVscode });
+            const provider = gitProvider(remoteUrl);
+
+            suite('#webUrl(branch, filePath)', function () {
+                test('should return custom domain URL', function () {
+                    const expectedUrl = `https://${testDomain}/${userName}/${repoName}/blob/${branch}${filePath}`;
                     const webUrl = provider.webUrl(branch, filePath);
                     expect(webUrl).to.equal(expectedUrl);
                 });

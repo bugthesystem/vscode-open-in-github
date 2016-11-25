@@ -81,7 +81,7 @@ const providers = {
 function gitProvider(remoteUrl) {
     const gitUrl = gitUrlParse(remoteUrl);
     for (const domain of Object.keys(providers)) {
-        if (domain === gitUrl.source) {
+        if (domain === gitUrl.resource || domain === gitUrl.source) {
             return new providers[domain](gitUrl);
         }
     }

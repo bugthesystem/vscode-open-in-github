@@ -10,28 +10,12 @@ var Position = VsCode.Position;
 var path = require('path');
 var fs = require('fs');
 var git = require('parse-git-config');
-var parse = require('github-url-from-git');
 var open = require('open');
 var copy = require('copy-paste').copy;
 var gitRev = require('git-rev-2');
 var findParentDir = require('find-parent-dir');
 
-function formGitHubLink(parsedUri, branch, subdir, line) {
-    if (subdir) {
-        return parsedUri + "/blob/" + branch + subdir + (line ? "#L" + line : "");
-    }
-
-    return parsedUri + "/tree/" + branch;
-}
-
-
-function formBitBucketLink(parsedUri, branch, subdir, line) {
-    return parsedUri + "/src/" + branch + (subdir ? subdir : "") + (line ? "#cl-" + line : "");
-}
-
-function formVisualStudioLink(parsedUri, subdir, branch, line) {
-    return parsedUri + "#" + (subdir ? "path=" + subdir : "") + "&version=GB" + branch + (line ? "&line=" + line : "");
-}
+const gitProvider = require('./gitProvider');
 
 function getGitHubLink(cb, fileFsPath, line) {
     var cwd = workspace.rootPath;
@@ -40,37 +24,19 @@ function getGitHubLink(cb, fileFsPath, line) {
     git({
         cwd: repoDir
     }, function (err, config) {
-        var rawUri, parseOpts, parsedUri, branch, projectName,
-            subdir, gitLink, scUrls, workspaceConfiguration;
+        const rawUri = config['remote \"origin\"'].url;
+        const provider = gitProvider(rawUri);
 
-        workspaceConfiguration = VsCode.workspace.getConfiguration("openInGitHub");
-        scUrls = {
-            github: 'https://' + workspaceConfiguration.gitHubDomain,
-            bitbucket: 'https://bitbucket.org',
-            visualstudiocom: /^https:\/\/[\w\d-]*\.visualstudio.com\//
-        }
-
-        rawUri = config['remote \"origin\"'].url;
-        parseOpts = {
-            extraBaseUrls: [
-                'bitbucket.org',
-                workspaceConfiguration.gitHubDomain
-            ]
-        }
-
-        rawUri = rawUri.replace('bitbucket.org:', 'bitbucket.org/')
-
-        parsedUri = parse(rawUri, parseOpts);
-        if (!parsedUri) {
-            parsedUri = rawUri;
+        if (!provider) {
+            Window.showWarningMessage('Unknown Git provider.');
+            return;
         }
 
         gitRev.branch(cwd, function (branchErr, branch) {
             if (branchErr || !branch)
                 branch = 'master';
 
-            projectName = parsedUri.substring(parsedUri.lastIndexOf("/") + 1, parsedUri.length);
-            subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
+            let subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
 
             if (repoDir !== cwd) {
                 // The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
@@ -78,18 +44,7 @@ function getGitHubLink(cb, fileFsPath, line) {
                 subdir = repoRelativePath + subdir;
             }
 
-            if (parsedUri.startsWith(scUrls.github)) {
-                gitLink = formGitHubLink(parsedUri, branch, subdir, line);
-            } else if (parsedUri.startsWith(scUrls.bitbucket)) {
-                gitLink = formBitBucketLink(parsedUri, branch, subdir, line);
-            } else if (scUrls.visualstudiocom.test(parsedUri)) {
-                gitLink = formVisualStudioLink(parsedUri, subdir, branch, line);
-            } else {
-                Window.showWarningMessage('Unknown Git provider.');
-            }
-
-            if (gitLink)
-                cb(gitLink);
+            cb(provider.webUrl(branch, subdir, line));
         });
     });
 }

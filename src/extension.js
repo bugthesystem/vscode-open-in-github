@@ -17,7 +17,7 @@ var findParentDir = require('find-parent-dir');
 
 const gitProvider = require('./gitProvider');
 
-function getGitHubLink(cb, fileFsPath, line) {
+function getGitProviderLink(cb, fileFsPath, line) {
     var cwd = workspace.rootPath;
     var repoDir = findParentDir.sync(workspace.rootPath, '.git') || cwd;
 
@@ -49,46 +49,47 @@ function getGitHubLink(cb, fileFsPath, line) {
     });
 }
 
-function getGitHubLinkForFile(fileFsPath, cb) {
-    getGitHubLink(cb, fileFsPath);
+function getGitProviderLinkForFile(fileFsPath, cb) {
+    getGitProviderLink(cb, fileFsPath);
 }
 
-function getGitHubLinkForCurrentEditorLine(cb) {
+function getGitProviderLinkForCurrentEditorLine(cb) {
     var editor = Window.activeTextEditor;
     if (editor) {
         var lineIndex = editor.selection.active.line + 1;
         var fileFsPath = editor.document.uri.fsPath;
-        getGitHubLink(cb, fileFsPath, lineIndex);
+        getGitProviderLink(cb, fileFsPath, lineIndex);
     }
 }
 
-function getGitHubLinkForRepo(cb) {
-    getGitHubLink(cb);
+function getGitProviderLinkForRepo(cb) {
+    getGitProviderLink(cb);
 }
 
 function branchOnCallingContext(args, cb) {
     if (args && args.fsPath) {
-        getGitHubLinkForFile(args.fsPath, cb);
+        getGitProviderLinkForFile(args.fsPath, cb);
     }
     else if (Window.activeTextEditor) {
-        getGitHubLinkForCurrentEditorLine(cb);
+        getGitProviderLinkForCurrentEditorLine(cb);
     }
     else {
-        getGitHubLinkForRepo(cb);
+        getGitProviderLinkForRepo(cb);
     }
 }
 
-function openInGitHub(args) {
+function openInGitProvider(args) {
     branchOnCallingContext(args, open);
 }
 
-function copyGitHubLinkToClipboard(args) {
+function copyGitProviderLinkToClipboard(args) {
     branchOnCallingContext(args, copy);
 }
 
+//TODO: rename openInGitHub to openInGitProvider
 function activate(context) {
-    context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitHub));
-    context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitHubLinkToClipboard));
+    context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitProvider));
+    context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard));
 }
 
 exports.activate = activate;

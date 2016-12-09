@@ -3,7 +3,7 @@
     "displayName": "Open in GitHub / Bitbucket / VisualStudio.com !",
     "description": "Jump to a source code line in Github / Bitbucket / VisualStudio.com !",
     "icon": "images/icon_200.png",
-    "version": "1.2.1",
+    "version": "1.2.3",
     "publisher": "ziyasal",
     "license": "SEE LICENSE IN LICENSE.md",
     "galleryBanner": {

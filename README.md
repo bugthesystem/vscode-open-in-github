@@ -1,7 +1,7 @@
 ![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")  
-**Supports :** GitHub, Bitbucket, Visualstudio.com
+**Supports :** GitHub, Bitbucket, Visualstudio.com and GitLab
 
-> Extension for Visual Studio Code which can be used to jump to a source code line in Github / Bitbucket
+> Extension for Visual Studio Code which can be used to jump to a source code line in Github, Bitbucket, Visualstudio.com and GitLab
 
 [![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github)
 

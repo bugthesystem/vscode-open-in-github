@@ -26,7 +26,8 @@
     },
     "activationEvents": [
         "onCommand:extension.openInGitHub",
-        "onCommand:extension.copyGitHubLinkToClipboard"
+        "onCommand:extension.copyGitHubLinkToClipboard",
+        "onCommand:extension.openPrGitProvider"
     ],
     "main": "./src/extension",
     "contributes": {
@@ -38,6 +39,10 @@
             {
                 "command": "extension.copyGitHubLinkToClipboard",
                 "title": "Copy GitHub link to clipboard"
+            },
+            {
+                "command": "extension.openPrGitProvider",
+                "title": "Open Pull Request"
             }
         ],
         "configuration": {
@@ -63,6 +68,11 @@
                 "command": "extension.copyGitHubLinkToClipboard",
                 "key": "ctrl+l c",
                 "mac": "ctrl+l c"
+            },
+            {
+                "command": "extension.openPrGitProvider",
+                "key": "ctrl+l p",
+                "mac": "ctrl+l p"
             }
         ],
         "menus": {
@@ -72,6 +82,9 @@
                 },
                 {
                     "command": "extension.copyGitHubLinkToClipboard"
+                },
+                {
+                    "command": "extension.openPrGitProvider"
                 }
             ]
         }

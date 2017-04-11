@@ -24,6 +24,9 @@ class BaseProvider {
     webUrl(branch, filePath, line) {
         return '';
     }
+    prUrl(branch) {
+        return '';
+    }    
 }
 
 class GitHub extends BaseProvider {
@@ -33,11 +36,17 @@ class GitHub extends BaseProvider {
         }
         return `${this.baseUrl}/tree/${branch}`;
     }
+    prUrl(branch){
+        return `${this.baseUrl}/pull/new/${branch}`;
+    }    
 }
 
 class Bitbucket extends BaseProvider {
     webUrl(branch, filePath, line) {
         return `${this.baseUrl}/src/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#cl-${line}` : '');
+    }
+    prUrl(branch){
+        return `${this.baseUrl}/pull-requests/new?source=${branch}`;
     }
 }
 

@@ -17,7 +17,7 @@ var findParentDir = require('find-parent-dir');
 
 const gitProvider = require('./gitProvider');
 
-function getGitProviderLink(cb, fileFsPath, line) {
+function getGitProviderLink(cb, fileFsPath, line, pr) {
     var cwd = workspace.rootPath;
     var repoDir = findParentDir.sync(workspace.rootPath, '.git') || cwd;
 
@@ -44,10 +44,18 @@ function getGitProviderLink(cb, fileFsPath, line) {
                 subdir = repoRelativePath + subdir;
             }
 
-            cb(provider.webUrl(branch, subdir, line));
+            if (pr){
+                cb(provider.prUrl(branch));
+            }
+            else {
+                cb(provider.webUrl(branch, subdir, line));
+            }
+            
         });
     });
 }
+
+
 
 function getGitProviderLinkForFile(fileFsPath, cb) {
     getGitProviderLink(cb, fileFsPath);
@@ -66,8 +74,16 @@ function getGitProviderLinkForRepo(cb) {
     getGitProviderLink(cb);
 }
 
-function branchOnCallingContext(args, cb) {
-    if (args && args.fsPath) {
+function getGitProviderPullRequest(cb) {
+    getGitProviderLink(cb, undefined, undefined, true);
+}
+
+
+function branchOnCallingContext(args, cb, pr) {
+    if (pr) {
+        getGitProviderPullRequest(cb);
+    }
+    else if (args && args.fsPath) {
         getGitProviderLinkForFile(args.fsPath, cb);
     }
     else if (Window.activeTextEditor) {
@@ -78,6 +94,7 @@ function branchOnCallingContext(args, cb) {
     }
 }
 
+
 function openInGitProvider(args) {
     branchOnCallingContext(args, open);
 }
@@ -86,10 +103,15 @@ function copyGitProviderLinkToClipboard(args) {
     branchOnCallingContext(args, copy);
 }
 
+function openPrGitProvider(args) {
+    branchOnCallingContext(args, open, true);
+}
+
 //TODO: rename openInGitHub to openInGitProvider
 function activate(context) {
     context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitProvider));
     context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard));
+    context.subscriptions.push(commands.registerCommand('extension.openPrGitProvider', openPrGitProvider));
 }
 
 exports.activate = activate;

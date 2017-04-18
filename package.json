@@ -1,114 +1,114 @@
 {
-    "name": "vscode-open-in-github",
-    "displayName": "Open in GitHub / Bitbucket / VisualStudio.com !",
-    "description": "Jump to a source code line in Github / Bitbucket / VisualStudio.com !",
-    "icon": "images/icon_200.png",
-    "version": "1.2.3",
-    "publisher": "ziyasal",
-    "license": "SEE LICENSE IN LICENSE.md",
-    "galleryBanner": {
-        "color": "#E9EBED",
-        "theme": "light"
-    },
-    "homepage": "https://github.com/ziyasal/vscode-open-in-github/blob/master/README.md",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ziyasal/vscode-open-in-github.git"
-    },
-    "bugs": {
-        "url": "https://github.com/ziyasal/vscode-open-in-github/issues"
-    },
-    "categories": [
-        "Other"
+  "name": "vscode-open-in-github",
+  "displayName": "Open in GitHub / Bitbucket / VisualStudio.com !",
+  "description": "Jump to a source code line in Github / Bitbucket / VisualStudio.com !",
+  "icon": "images/icon_200.png",
+  "version": "1.2.4",
+  "publisher": "ziyasal",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "galleryBanner": {
+    "color": "#E9EBED",
+    "theme": "light"
+  },
+  "homepage": "https://github.com/ziyasal/vscode-open-in-github/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ziyasal/vscode-open-in-github.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ziyasal/vscode-open-in-github/issues"
+  },
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "0.10.x"
+  },
+  "activationEvents": [
+    "onCommand:extension.openInGitHub",
+    "onCommand:extension.copyGitHubLinkToClipboard",
+    "onCommand:extension.openPrGitProvider"
+  ],
+  "main": "./src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.openInGitHub",
+        "title": "Open in GitHub"
+      },
+      {
+        "command": "extension.copyGitHubLinkToClipboard",
+        "title": "Copy GitHub link to clipboard"
+      },
+      {
+        "command": "extension.openPrGitProvider",
+        "title": "Open Pull Request"
+      }
     ],
-    "engines": {
-        "vscode": "0.10.x"
-    },
-    "activationEvents": [
-        "onCommand:extension.openInGitHub",
-        "onCommand:extension.copyGitHubLinkToClipboard",
-        "onCommand:extension.openPrGitProvider"
-    ],
-    "main": "./src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.openInGitHub",
-                "title": "Open in GitHub"
-            },
-            {
-                "command": "extension.copyGitHubLinkToClipboard",
-                "title": "Copy GitHub link to clipboard"
-            },
-            {
-                "command": "extension.openPrGitProvider",
-                "title": "Open Pull Request"
-            }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "Open in Github extension configuration",
-            "properties": {
-                "openInGitHub.gitHubDomain": {
-                    "type": [
-                        "string"
-                    ],
-                    "default": "github.com",
-                    "description": "Configure a custom Github domain. Useful for Github entreprise"
-                }
-            }
-        },
-        "keybindings": [
-            {
-                "command": "extension.openInGitHub",
-                "key": "ctrl+l g",
-                "mac": "ctrl+l g"
-            },
-            {
-                "command": "extension.copyGitHubLinkToClipboard",
-                "key": "ctrl+l c",
-                "mac": "ctrl+l c"
-            },
-            {
-                "command": "extension.openPrGitProvider",
-                "key": "ctrl+l p",
-                "mac": "ctrl+l p"
-            }
-        ],
-        "menus": {
-            "explorer/context": [
-                {
-                    "command": "extension.openInGitHub"
-                },
-                {
-                    "command": "extension.copyGitHubLinkToClipboard"
-                },
-                {
-                    "command": "extension.openPrGitProvider"
-                }
-            ]
+    "configuration": {
+      "type": "object",
+      "title": "Open in Github extension configuration",
+      "properties": {
+        "openInGitHub.gitHubDomain": {
+          "type": [
+            "string"
+          ],
+          "default": "github.com",
+          "description": "Configure a custom Github domain. Useful for Github entreprise"
         }
+      }
     },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "test:linuxOSX": "CODE_TESTS_WORKSPACE=$(cd \"$(dirname \"$0\")\" && pwd -P)/test/sampleTestData node ./node_modules/vscode/bin/test ",
-        "test:windows": "cd && code -n %CD%/test/sampleTestData --extensionDevelopmentPath=%CD% --extensionTestsPath=%CD%/test --verbose",
-        "test": "node ./testScript",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "devDependencies": {
-        "chai": "^3.5.0",
-        "proxyquire": "^1.7.10",
-        "typescript": "^1.6.2",
-        "vscode": "0.11.13"
-    },
-    "dependencies": {
-        "copy-paste": "^1.1.4",
-        "find-parent-dir": "^0.3.0",
-        "git-rev-2": "^0.1.0",
-        "git-url-parse": "^6.1.0",
-        "open": "0.0.5",
-        "parse-git-config": "^0.3.1"
+    "keybindings": [
+      {
+        "command": "extension.openInGitHub",
+        "key": "ctrl+l g",
+        "mac": "ctrl+l g"
+      },
+      {
+        "command": "extension.copyGitHubLinkToClipboard",
+        "key": "ctrl+l c",
+        "mac": "ctrl+l c"
+      },
+      {
+        "command": "extension.openPrGitProvider",
+        "key": "ctrl+l p",
+        "mac": "ctrl+l p"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.openInGitHub"
+        },
+        {
+          "command": "extension.copyGitHubLinkToClipboard"
+        },
+        {
+          "command": "extension.openPrGitProvider"
+        }
+      ]
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "test:linuxOSX": "CODE_TESTS_WORKSPACE=$(cd \"$(dirname \"$0\")\" && pwd -P)/test/sampleTestData node ./node_modules/vscode/bin/test ",
+    "test:windows": "cd && code -n %CD%/test/sampleTestData --extensionDevelopmentPath=%CD% --extensionTestsPath=%CD%/test --verbose",
+    "test": "node ./testScript",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "proxyquire": "^1.7.10",
+    "typescript": "^1.6.2",
+    "vscode": "0.11.13"
+  },
+  "dependencies": {
+    "copy-paste": "^1.1.4",
+    "find-parent-dir": "^0.3.0",
+    "git-rev-2": "^0.1.0",
+    "git-url-parse": "^6.1.0",
+    "open": "0.0.5",
+    "parse-git-config": "^0.3.1"
+  }
 }

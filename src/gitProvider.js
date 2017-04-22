@@ -19,30 +19,31 @@ class BaseProvider {
      * @param {string} branch
      * @param {string} filePath The file path relative to repository root, beginning with '/'.
      * @param {number} line
+     * @param {number} endLine The last line in a multi-line selection
      * @return {string} The URL to be opened with the browser.
      */
-    webUrl(branch, filePath, line) {
+    webUrl(branch, filePath, line, endLine) {
         return '';
     }
     prUrl(branch) {
         return '';
-    }    
+    }
 }
 
 class GitHub extends BaseProvider {
-    webUrl(branch, filePath, line) {
+    webUrl(branch, filePath, line, endLine) {
         if (filePath) {
-            return `${this.baseUrl}/blob/${branch}${filePath}` + (line ? '#L' + line : '');
+            return `${this.baseUrl}/blob/${branch}${filePath}` + (line ? '#L' + line : '') + (endLine ? '-L' + endLine : '');
         }
         return `${this.baseUrl}/tree/${branch}`;
     }
     prUrl(branch){
         return `${this.baseUrl}/pull/new/${branch}`;
-    }    
+    }
 }
 
 class Bitbucket extends BaseProvider {
-    webUrl(branch, filePath, line) {
+    webUrl(branch, filePath, line, endLine) {
         return `${this.baseUrl}/src/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#cl-${line}` : '');
     }
     prUrl(branch){
@@ -58,7 +59,7 @@ class VisualStudio extends BaseProvider {
         return `https://${this.gitUrl.resource}${this.gitUrl.pathname}`.replace(/\.git/, '');
     }
 
-    webUrl(branch, filePath, line) {
+    webUrl(branch, filePath, line, endLine) {
         let query = {
             version: `GB${branch}`,
         };

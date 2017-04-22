@@ -16,6 +16,7 @@ var gitRev = require('git-rev-2');
 var findParentDir = require('find-parent-dir');
 
 const gitProvider = require('./gitProvider');
+const requireSelectionForLines = workspace.getConfiguration('openInGitHub').get('requireSelectionForLines');
 
 function getGitProviderLink(cb, fileFsPath, lines, pr) {
     var cwd = workspace.rootPath;
@@ -48,14 +49,18 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                 cb(provider.prUrl(branch));
             }
             else {
-                if (lines[0] == lines[1]) {
-                    cb(provider.webUrl(branch, subdir, lines[0]));
+                if (lines) {
+                    if (lines[0] == lines[1]) {
+                        cb(provider.webUrl(branch, subdir, lines[0]));
+                    }
+                    else {
+                        cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                    }
                 }
                 else {
-                    cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                    cb(provider.webUrl(branch, subdir));
                 }
             }
-
         });
     });
 }
@@ -70,8 +75,18 @@ function getGitProviderLinkForCurrentEditorLines(cb) {
     var editor = Window.activeTextEditor;
     if (editor) {
         var fileFsPath = editor.document.uri.fsPath;
-        getGitProviderLink(cb, fileFsPath, getSelectedLines(editor));
+
+        if (includeLines(editor)) {
+            getGitProviderLink(cb, fileFsPath, getSelectedLines(editor));
+        }
+        else {
+            getGitProviderLinkForFile(fileFsPath, cb);
+        }
     }
+}
+
+function includeLines(editor) {
+    return !requireSelectionForLines || !editor.selection.isEmpty;
 }
 
 function getSelectedLines(editor) {

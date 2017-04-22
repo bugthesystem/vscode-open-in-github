@@ -55,6 +55,11 @@
           ],
           "default": "github.com",
           "description": "Configure a custom Github domain. Useful for Github entreprise"
+        },
+        "openInGitHub.requireSelectionForLines": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled, the copied or opened URL won't include line number(s) unless there's an active selection"
         }
       }
     },

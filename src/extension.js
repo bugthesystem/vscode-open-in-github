@@ -17,7 +17,7 @@ var findParentDir = require('find-parent-dir');
 
 const gitProvider = require('./gitProvider');
 
-function getGitProviderLink(cb, fileFsPath, line, pr) {
+function getGitProviderLink(cb, fileFsPath, lines, pr) {
     var cwd = workspace.rootPath;
     var repoDir = findParentDir.sync(workspace.rootPath, '.git') || cwd;
 
@@ -48,9 +48,14 @@ function getGitProviderLink(cb, fileFsPath, line, pr) {
                 cb(provider.prUrl(branch));
             }
             else {
-                cb(provider.webUrl(branch, subdir, line));
+                if (lines[0] == lines[1]) {
+                    cb(provider.webUrl(branch, subdir, lines[0]));
+                }
+                else {
+                    cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                }
             }
-            
+
         });
     });
 }
@@ -61,13 +66,19 @@ function getGitProviderLinkForFile(fileFsPath, cb) {
     getGitProviderLink(cb, fileFsPath);
 }
 
-function getGitProviderLinkForCurrentEditorLine(cb) {
+function getGitProviderLinkForCurrentEditorLines(cb) {
     var editor = Window.activeTextEditor;
     if (editor) {
-        var lineIndex = editor.selection.active.line + 1;
         var fileFsPath = editor.document.uri.fsPath;
-        getGitProviderLink(cb, fileFsPath, lineIndex);
+        getGitProviderLink(cb, fileFsPath, getSelectedLines(editor));
     }
+}
+
+function getSelectedLines(editor) {
+    var anchorLineIndex = editor.selection.anchor.line + 1;
+    var activeLineIndex = editor.selection.active.line + 1;
+
+    return [anchorLineIndex, activeLineIndex].sort();
 }
 
 function getGitProviderLinkForRepo(cb) {
@@ -87,7 +98,7 @@ function branchOnCallingContext(args, cb, pr) {
         getGitProviderLinkForFile(args.fsPath, cb);
     }
     else if (Window.activeTextEditor) {
-        getGitProviderLinkForCurrentEditorLine(cb);
+        getGitProviderLinkForCurrentEditorLines(cb);
     }
     else {
         getGitProviderLinkForRepo(cb);

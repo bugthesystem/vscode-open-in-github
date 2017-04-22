@@ -47,6 +47,8 @@ Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
 
 ![copy](screenshots/copy.png?raw=true "Copy function")
 
+(The URL for Github will also include line ranges if there are lines selected in the editor)
+
 Press <kbd>F1</kbd> and type `Open Pull Request`.
 
 ![copy](screenshots/pull-req-cmd.png?raw=true "Copy function")

@@ -47,6 +47,8 @@ Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
 
 ![copy](screenshots/copy.png?raw=true "Copy function")
 
+(The URL for Github will also include line ranges if there are lines selected in the editor)
+
 Press <kbd>F1</kbd> and type `Open Pull Request`.
 
 ![copy](screenshots/pull-req-cmd.png?raw=true "Copy function")
@@ -66,9 +68,10 @@ Right click on explorer item and choose `Open in GitHub` or `Copy GitHub link to
 
 Add following line into workspace settings;
 
-```json
+```js
 {
-  "openInGitHub.gitHubDomain":"your custom github domain here"
+  "openInGitHub.gitHubDomain":"your custom github domain here",
+  "openInGitHub.requireSelectionForLines":false   // If enabled, the copied or opened URL won't include line number(s) unless there's an active selection
 }
 ```
 

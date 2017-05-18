@@ -26,10 +26,13 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
         cwd: repoDir
     }, function (err, config) {
         const rawUri = config['remote \"origin\"'].url;
-        const provider = gitProvider(rawUri);
+        var provider = null;
 
-        if (!provider) {
-            Window.showWarningMessage('Unknown Git provider.');
+        try {
+            provider = gitProvider(rawUri);
+        } catch (e) {
+            let errmsg = e.toString();
+            Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
             return;
         }
 
@@ -46,7 +49,12 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
             }
 
             if (pr){
-                cb(provider.prUrl(branch));
+                try {
+                    cb(provider.prUrl(branch));
+                }catch (e){
+                    Window.showWarningMessage(e.toString());
+                    return;
+                }
             }
             else {
                 if (lines) {

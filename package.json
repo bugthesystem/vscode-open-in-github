@@ -60,6 +60,16 @@
           "type": "boolean",
           "default": false,
           "description": "If enabled, the copied or opened URL won't include line number(s) unless there's an active selection"
+        },
+        "openInGitHub.providerType": {
+          "type": "string",
+          "default": "gitlab",
+          "enum": [
+              "gitlab",
+              "github",
+              "bitbucket"
+          ],
+          "description": "specify the provider type in Custom Site"
         }
       }
     },

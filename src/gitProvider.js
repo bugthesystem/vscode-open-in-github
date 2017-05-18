@@ -52,6 +52,19 @@ class Bitbucket extends BaseProvider {
 }
 
 class GitLab extends GitHub {
+    webUrl(branch, filePath, line, endLine) {
+        if (filePath) {
+            return `${this.baseUrl}/blob/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#L-${line}` : '');
+        }
+        return `${this.baseUrl}/tree/${branch}`;
+    }
+    prUrl(branch){
+        //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
+        // doesn't support yet, require target_branch, title to supply further
+        throw new Error(`doesn't support Merge Request from URL in gitlab provider yet`);
+        //TODO
+        //return `${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`;
+    }
 }
 
 class VisualStudio extends BaseProvider {
@@ -74,6 +87,7 @@ class VisualStudio extends BaseProvider {
 }
 
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
+const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
 
 const providers = {
     [gitHubDomain]: GitHub,
@@ -89,13 +103,16 @@ const providers = {
  * @return {BaseProvider|null}
  */
 function gitProvider(remoteUrl) {
+    console.log(providerType);
     const gitUrl = gitUrlParse(remoteUrl);
     for (const domain of Object.keys(providers)) {
         if (domain === gitUrl.resource || domain === gitUrl.source) {
             return new providers[domain](gitUrl);
+        }else if( domain.indexOf(providerType) > -1 ){
+            return new providers[domain](gitUrl);
         }
     }
-    return null;
+    throw new Error('unknown Provider');
 }
 
 module.exports = gitProvider;

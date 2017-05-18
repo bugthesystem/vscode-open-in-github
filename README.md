@@ -72,6 +72,7 @@ Add following line into workspace settings;
 {
   "openInGitHub.gitHubDomain":"your custom github domain here",
   "openInGitHub.requireSelectionForLines":false   // If enabled, the copied or opened URL won't include line number(s) unless there's an active selection
+  "openInGitHub.providerType": "gitlab" //github, gitlab, bitbucket, ...
 }
 ```
 

@@ -70,8 +70,9 @@ Add following line into workspace settings;
 
 ```js
 {
+  "openInGitHub.customBaseUrl":"your custom base url here", // Example: "http://domain.example.com/projectname". For self-hosted Git service.
   "openInGitHub.gitHubDomain":"your custom github domain here",
-  "openInGitHub.requireSelectionForLines":false   // If enabled, the copied or opened URL won't include line number(s) unless there's an active selection
+  "openInGitHub.requireSelectionForLines":false,   // If enabled, the copied or opened URL won't include line number(s) unless there's an active selection.
   "openInGitHub.providerType": "gitlab" //github, gitlab, bitbucket, ...
 }
 ```

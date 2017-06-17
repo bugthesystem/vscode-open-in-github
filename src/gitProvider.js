@@ -4,12 +4,17 @@ const workspace = require('vscode').workspace
 const querystring = require('querystring');
 const gitUrlParse = require('git-url-parse');
 
+const customBaseUrl = workspace.getConfiguration('openInGitHub').get('customBaseUrl');
+
 class BaseProvider {
     constructor(gitUrl) {
         this.gitUrl = gitUrl;
     }
 
     get baseUrl() {
+        if (customBaseUrl) {
+            return customBaseUrl;
+        }
         return this.gitUrl.toString('https').replace(/\.git/, '');
     }
 

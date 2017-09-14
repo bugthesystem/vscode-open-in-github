@@ -25,20 +25,34 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
     git({
         cwd: repoDir
     }, function (err, config) {
-        const rawUri = config['remote \"origin\"'].url;
-        var provider = null;
 
-        try {
-            provider = gitProvider(rawUri);
-        } catch (e) {
-            let errmsg = e.toString();
-            Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
-            return;
-        }
+        gitRev.branch(cwd, function(branchErr, branch) {
+            var rawUri,
+                configuredBranch,
+                provider = null,
+                remoteName;
 
-        gitRev.branch(cwd, function (branchErr, branch) {
-            if (branchErr || !branch)
-                branch = 'master';
+            if (branchErr || !branch) branch = 'master';
+
+            // Check to see if the branch has a configured remote
+            configuredBranch = config[`branch "${branch}"`];
+
+            if (!configuredBranch) {
+                Window.showWarningMessage(`No remote found on branch.`);
+                return;
+            }
+
+            // Use the current branch's configured remote
+            remoteName = configuredBranch.remote;
+            rawUri = config[`remote "${remoteName}"`].url;
+
+            try {
+                provider = gitProvider(rawUri);
+            } catch (e) {
+                let errmsg = e.toString();
+                Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
+                return;
+            }
 
             let subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
 

@@ -75,6 +75,26 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "linarnan",
+      "name": "linarnan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/649067?v=4",
+      "profile": "https://github.com/linarnan",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "danseethaler",
+      "name": "Dan Seethaler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11202705?v=4",
+      "profile": "https://github.com/danseethaler",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ]
 }

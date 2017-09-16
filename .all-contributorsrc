@@ -39,6 +39,15 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "suan",
+      "name": "Suan Yeo",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/192727?v=4",
+      "profile": "http://suanaikyeo.com",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

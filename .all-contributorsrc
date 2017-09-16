@@ -28,6 +28,17 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "itiut",
+      "name": "Yuichi Tanikawa",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1145226?v=4",
+      "profile": "http://itiut.hatenablog.com/",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ]
 }

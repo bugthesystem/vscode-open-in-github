@@ -1,9 +1,10 @@
 ![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")  
+
 **Supports :** GitHub, Bitbucket, Visualstudio.com and GitLab
 
 > Extension for Visual Studio Code which can be used to jump to a source code line in Github, Bitbucket, Visualstudio.com and GitLab
 
-[![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github)
+[![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github) [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 ## Install
 
@@ -81,3 +82,14 @@ Have fun..
 ## License
 
 MIT © [Ziya SARIKAYA @ziyasal](https://github.com/ziyasal) & Contributors
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars0.githubusercontent.com/u/759811?v=4" width="75px;"/><br /><sub>Brady Holt</sub>](https://www.geekytidbits.com)<br />[💻](https://github.com/ziyasal/vscode-open-in-github/commits?author=bradyholt "Code") [📖](https://github.com/ziyasal/vscode-open-in-github/commits?author=bradyholt "Documentation") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

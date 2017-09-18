@@ -79,10 +79,6 @@ Add following line into workspace settings;
 
 Have fun..
 
-## License
-
-MIT © [Ziya SARIKAYA @ziyasal](https://github.com/ziyasal) & Contributors
-
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
@@ -94,3 +90,8 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+
+
+## License
+
+MIT © [Ziya SARIKAYA @ziyasal](https://github.com/ziyasal) & Contributors

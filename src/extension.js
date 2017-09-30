@@ -37,14 +37,21 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
             // Check to see if the branch has a configured remote
             configuredBranch = config[`branch "${branch}"`];
 
-            if (!configuredBranch) {
+            if (configuredBranch) {
+                // Use the current branch's configured remote
+                remoteName = configuredBranch.remote;
+                rawUri = config[`remote "${remoteName}"`].url;
+            } else {
+                const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
+                if (remotes.length > 0) {
+                    rawUri = config[remotes[0]].url;
+                }
+            }
+
+            if (!rawUri) {
                 Window.showWarningMessage(`No remote found on branch.`);
                 return;
             }
-
-            // Use the current branch's configured remote
-            remoteName = configuredBranch.remote;
-            rawUri = config[`remote "${remoteName}"`].url;
 
             try {
                 provider = gitProvider(rawUri);

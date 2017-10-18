@@ -9,24 +9,26 @@ var Position = VsCode.Position;
 
 var path = require('path');
 var fs = require('fs');
-var git = require('parse-git-config');
 var open = require('open');
 var copy = require('copy-paste').copy;
 var gitRev = require('git-rev-2');
 var findParentDir = require('find-parent-dir');
+var ini = require('ini');
 
 const gitProvider = require('./gitProvider');
 const requireSelectionForLines = workspace.getConfiguration('openInGitHub').get('requireSelectionForLines');
 
 function getGitProviderLink(cb, fileFsPath, lines, pr) {
-    var cwd = workspace.rootPath;
-    var repoDir = findParentDir.sync(workspace.rootPath, '.git') || cwd;
+    var repoDir = findParentDir.sync(fileFsPath, '.git');
+    if(!repoDir) {
+        throw 'Cant locate .git repository for this file';
+    }
 
-    git({
-        cwd: repoDir
-    }, function (err, config) {
+    locateGitConfig(repoDir)
+    .then(readConfigFile)
+    .then(config => {
 
-        gitRev.branch(cwd, function(branchErr, branch) {
+        gitRev.branch(repoDir, function(branchErr, branch) {
             var rawUri,
                 configuredBranch,
                 provider = null,
@@ -61,13 +63,7 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                 return;
             }
 
-            let subdir = fileFsPath ? fileFsPath.substring(workspace.rootPath.length).replace(/\"/g, "") : undefined;
-
-            if (repoDir !== cwd) {
-                // The workspace directory is a subdirectory of the git repo folder so we need to prepend the the nested path
-                var repoRelativePath = cwd.replace(repoDir, "/");
-                subdir = repoRelativePath + subdir;
-            }
+            let subdir = repoDir !== fileFsPath ? '/' + path.relative(repoDir, fileFsPath) : '';
 
             if (pr){
                 try {
@@ -94,7 +90,37 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
     });
 }
 
+function locateGitConfig(repoDir) {
+    return new Promise((resolve, reject) => {
+        fs.lstat(path.join(repoDir, '.git'), (err, stat) => {
+            if(err) { reject(err); }
+            if(stat.isFile()) {
+                // .git may be a file, similar to symbolic link, containing "gitdir: <relative path to git dir>""
+                // this happens in gitsubmodules
+                fs.readFile(path.join(repoDir, '.git'), 'utf-8', (err, data) => {
+                    if(err) { reject(err); }
+                    var match = data.match(/gitdir: (.*)/)[1];
+                    if(!match) {
+                        reject('Unable to find gitdir in .git file');
+                    }
+                    var configPath = path.join(repoDir, match, 'config');
+                    resolve(configPath);
+                });
+            } else {
+                resolve(path.join(repoDir, '.git', 'config'));
+            }
+        });
+    });
+}
 
+function readConfigFile(path) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf-8', (err, data) => {
+            if(err) { reject(err); }
+            resolve(ini.parse(data));
+        });
+    });
+}
 
 function getGitProviderLinkForFile(fileFsPath, cb) {
     getGitProviderLink(cb, fileFsPath);

@@ -148,7 +148,7 @@ function getSelectedLines(editor) {
     var anchorLineIndex = editor.selection.anchor.line + 1;
     var activeLineIndex = editor.selection.active.line + 1;
 
-    return [anchorLineIndex, activeLineIndex].sort();
+    return [anchorLineIndex, activeLineIndex].sort(function(a, b) { return a - b });
 }
 
 function getGitProviderLinkForRepo(cb) {

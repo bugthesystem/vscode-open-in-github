@@ -60,10 +60,8 @@ class GitLab extends GitHub {
     }
     prUrl(branch){
         //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
-        // doesn't support yet, require target_branch, title to supply further
+        //`${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
         throw new Error(`doesn't support Merge Request from URL in gitlab provider yet`);
-        //TODO
-        //return `${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`;
     }
 }
 
@@ -103,7 +101,6 @@ const providers = {
  * @return {BaseProvider|null}
  */
 function gitProvider(remoteUrl) {
-    console.log(providerType);
     const gitUrl = gitUrlParse(remoteUrl);
     for (const domain of Object.keys(providers)) {
         if (domain === gitUrl.resource || domain === gitUrl.source) {

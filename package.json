@@ -1,9 +1,9 @@
 {
   "name": "vscode-open-in-github",
-  "displayName": "Open in GitHub / Bitbucket / Gitlab / VisualStudio.com  !",
+  "displayName": "Open in GitHub / Bitbucket / Gitlab / VisualStudio.com !",
   "description": "Jump to a source code line in Github / Bitbucket / Gitlab / VisualStudio.com !",
   "icon": "images/icon_200.png",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {

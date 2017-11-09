@@ -10,7 +10,7 @@ class BaseProvider {
     }
 
     get baseUrl() {
-        return this.gitUrl.toString('https').replace(/\.git/, '');
+        return this.gitUrl.toString('https').replace(/(\.git)$/, '');
     }
 
     /**

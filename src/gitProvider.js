@@ -51,7 +51,7 @@ class Bitbucket extends BaseProvider {
     }
 }
 
-class GitLab extends GitHub {
+class GitLab extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
         if (filePath) {
             return `${this.baseUrl}/blob/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '');
@@ -61,7 +61,7 @@ class GitLab extends GitHub {
     prUrl(branch){
         //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
         //`${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
-        throw new Error(`doesn't support Merge Request from URL in gitlab provider yet`);
+        throw new Error(`Doesn't support Merge Request from URL in GitLab yet`);
     }
 }
 
@@ -81,6 +81,10 @@ class VisualStudio extends BaseProvider {
             query['line'] = line;
         }
         return `${this.baseUrl}?${querystring.stringify(query)}`;
+    }
+
+    prUrl(branch){
+        throw new Error(`Doesn't support Merge Request from URL in VisualStudio.com yet`);
     }
 }
 

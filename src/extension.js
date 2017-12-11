@@ -20,87 +20,88 @@ const requireSelectionForLines = workspace.getConfiguration('openInGitHub').get(
 
 function getGitProviderLink(cb, fileFsPath, lines, pr) {
     var repoDir = findParentDir.sync(fileFsPath, '.git');
-    if(!repoDir) {
+    if (!repoDir) {
         throw 'Cant locate .git repository for this file';
     }
 
     locateGitConfig(repoDir)
-    .then(readConfigFile)
-    .then(config => {
+        .then(readConfigFile)
+        .then(config => {
 
-        gitRev.branch(repoDir, function(branchErr, branch) {
-            var rawUri,
-                configuredBranch,
-                provider = null,
-                remoteName;
+            gitRev.branch(repoDir, function (branchErr, branch) {
+                var rawUri,
+                    configuredBranch,
+                    provider = null,
+                    remoteName;
 
-            if (branchErr || !branch) branch = 'master';
+                if (branchErr || !branch) branch = 'master';
 
-            // Check to see if the branch has a configured remote
-            configuredBranch = config[`branch "${branch}"`];
+                // Check to see if the branch has a configured remote
+                configuredBranch = config[`branch "${branch}"`];
 
-            if (configuredBranch) {
-                // Use the current branch's configured remote
-                remoteName = configuredBranch.remote;
-                rawUri = config[`remote "${remoteName}"`].url;
-            } else {
-                const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
-                if (remotes.length > 0) {
-                    rawUri = config[remotes[0]].url;
+                if (configuredBranch) {
+                    // Use the current branch's configured remote
+                    remoteName = configuredBranch.remote;
+                    rawUri = config[`remote "${remoteName}"`].url;
+                } else {
+                    const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
+                    if (remotes.length > 0) {
+                        rawUri = config[remotes[0]].url;
+                    }
                 }
-            }
 
-            if (!rawUri) {
-                Window.showWarningMessage(`No remote found on branch.`);
-                return;
-            }
-
-            try {
-                provider = gitProvider(rawUri);
-            } catch (e) {
-                let errmsg = e.toString();
-                Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
-                return;
-            }
-
-            let subdir = repoDir !== fileFsPath ? '/' + path.relative(repoDir, fileFsPath) : '';
-
-            if (pr){
-                try {
-                    cb(provider.prUrl(branch));
-                }catch (e){
-                    Window.showWarningMessage(e.toString());
+                if (!rawUri) {
+                    Window.showWarningMessage(`No remote found on branch.`);
                     return;
                 }
-            }
-            else {
-                if (lines) {
-                    if (lines[0] == lines[1]) {
-                        cb(provider.webUrl(branch, subdir, lines[0]));
+
+                try {
+                    provider = gitProvider(rawUri);
+                } catch (e) {
+                    let errmsg = e.toString();
+                    Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
+                    return;
+                }
+
+                let subdir = repoDir !== fileFsPath ? '/' + path.relative(repoDir, fileFsPath) : '';
+
+                if (pr) {
+                    try {
+                        cb(provider.prUrl(branch));
+                    } catch (e) {
+                        Window.showWarningMessage(e.toString());
+                        return;
                     }
-                    else {
-                        cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                } else {
+                    if (lines) {
+                        if (lines[0] == lines[1]) {
+                            cb(provider.webUrl(branch, subdir, lines[0]));
+                        } else {
+                            cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                        }
+                    } else {
+                        cb(provider.webUrl(branch, subdir));
                     }
                 }
-                else {
-                    cb(provider.webUrl(branch, subdir));
-                }
-            }
+            });
         });
-    });
 }
 
 function locateGitConfig(repoDir) {
     return new Promise((resolve, reject) => {
         fs.lstat(path.join(repoDir, '.git'), (err, stat) => {
-            if(err) { reject(err); }
-            if(stat.isFile()) {
+            if (err) {
+                reject(err);
+            }
+            if (stat.isFile()) {
                 // .git may be a file, similar to symbolic link, containing "gitdir: <relative path to git dir>""
                 // this happens in gitsubmodules
                 fs.readFile(path.join(repoDir, '.git'), 'utf-8', (err, data) => {
-                    if(err) { reject(err); }
+                    if (err) {
+                        reject(err);
+                    }
                     var match = data.match(/gitdir: (.*)/)[1];
-                    if(!match) {
+                    if (!match) {
                         reject('Unable to find gitdir in .git file');
                     }
                     var configPath = path.join(repoDir, match, 'config');
@@ -116,7 +117,9 @@ function locateGitConfig(repoDir) {
 function readConfigFile(path) {
     return new Promise((resolve, reject) => {
         fs.readFile(path, 'utf-8', (err, data) => {
-            if(err) { reject(err); }
+            if (err) {
+                reject(err);
+            }
             resolve(ini.parse(data));
         });
     });
@@ -128,15 +131,12 @@ function getGitProviderLinkForFile(fileFsPath, cb) {
 
 function getGitProviderLinkForCurrentEditorLines(cb) {
     var editor = Window.activeTextEditor;
-    if (editor) {
-        var fileFsPath = editor.document.uri.fsPath;
+    var fileFsPath = editor.document.uri.fsPath;
 
-        if (includeLines(editor)) {
-            getGitProviderLink(cb, fileFsPath, getSelectedLines(editor));
-        }
-        else {
-            getGitProviderLinkForFile(fileFsPath, cb);
-        }
+    if (includeLines(editor)) {
+        getGitProviderLink(cb, fileFsPath, getSelectedLines(editor));
+    } else {
+        getGitProviderLinkForFile(fileFsPath, cb);
     }
 }
 
@@ -148,29 +148,38 @@ function getSelectedLines(editor) {
     var anchorLineIndex = editor.selection.anchor.line + 1;
     var activeLineIndex = editor.selection.active.line + 1;
 
-    return [anchorLineIndex, activeLineIndex].sort(function(a, b) { return a - b });
+    return [anchorLineIndex, activeLineIndex].sort(function (a, b) {
+        return a - b
+    });
 }
 
 function getGitProviderLinkForRepo(cb) {
     getGitProviderLink(cb);
 }
 
-function getGitProviderPullRequest(cb) {
-    getGitProviderLink(cb, undefined, undefined, true);
-}
+function getGitProviderPullRequest(args, cb) {
+    let fsPath;
 
+    if (args && args.fsPath) {
+        fsPath = args.fsPath;
+    } else if (Window.activeTextEditor) {
+        fsPath = Window.activeTextEditor.document.uri.fsPath;
+    }
+
+    getGitProviderLink(cb, fsPath, undefined, true);
+}
 
 function branchOnCallingContext(args, cb, pr) {
     if (pr) {
-        getGitProviderPullRequest(cb);
+        return getGitProviderPullRequest(args, cb);
     }
-    else if (args && args.fsPath) {
+
+    if (args && args.fsPath) {
         getGitProviderLinkForFile(args.fsPath, cb);
-    }
-    else if (Window.activeTextEditor) {
+    } else if (Window.activeTextEditor) {
         getGitProviderLinkForCurrentEditorLines(cb);
-    }
-    else {
+    } else {
+        // TODO: This missed in code review so should be refactored, it is broken.
         getGitProviderLinkForRepo(cb);
     }
 }

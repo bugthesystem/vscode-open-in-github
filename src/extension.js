@@ -63,7 +63,8 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                     return;
                 }
 
-                let subdir = repoDir !== fileFsPath ? '/' + path.relative(repoDir, fileFsPath) : '';
+                let formattedFilePath = path.relative(repoDir, fileFsPath).replace(/\\/g, '/');
+                let subdir = repoDir !== fileFsPath ? '/' + formattedFilePath : '';
 
                 if (pr) {
                     try {

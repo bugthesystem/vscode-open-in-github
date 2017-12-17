@@ -28,13 +28,13 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
         .then(readConfigFile)
         .then(config => {
 
-            gitRev.branch(repoDir, function (branchErr, branch) {
+            gitRev.long(repoDir, function (branchErr, sha) {
                 var rawUri,
                     configuredBranch,
                     provider = null,
                     remoteName;
 
-                if (branchErr || !branch) branch = 'master';
+                var branch = 'master';
 
                 // Check to see if the branch has a configured remote
                 configuredBranch = config[`branch "${branch}"`];
@@ -75,12 +75,12 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                 } else {
                     if (lines) {
                         if (lines[0] == lines[1]) {
-                            cb(provider.webUrl(branch, subdir, lines[0]));
+                            cb(provider.webUrl(sha, subdir, lines[0]));
                         } else {
-                            cb(provider.webUrl(branch, subdir, lines[0], lines[1]));
+                            cb(provider.webUrl(sha, subdir, lines[0], lines[1]));
                         }
                     } else {
-                        cb(provider.webUrl(branch, subdir));
+                        cb(provider.webUrl(sha, subdir));
                     }
                 }
             });
@@ -174,10 +174,10 @@ function branchOnCallingContext(args, cb, pr) {
         return getGitProviderPullRequest(args, cb);
     }
 
-    if (args && args.fsPath) {
-        getGitProviderLinkForFile(args.fsPath, cb);
-    } else if (Window.activeTextEditor) {
+    if (Window.activeTextEditor) {
         getGitProviderLinkForCurrentEditorLines(cb);
+    } else if (args && args.fsPath) {
+      getGitProviderLinkForFile(args.fsPath, cb);
     } else {
         // TODO: This missed in code review so should be refactored, it is broken.
         getGitProviderLinkForRepo(cb);

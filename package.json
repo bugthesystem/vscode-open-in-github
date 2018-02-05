@@ -91,6 +91,11 @@
       }
     ],
     "menus": {
+      "editor/context": [
+        {
+          "command": "extension.openInGitHub"
+        }
+      ],
       "explorer/context": [
         {
           "command": "extension.openInGitHub"

@@ -10,7 +10,7 @@ class BaseProvider {
     }
 
     get baseUrl() {
-        return this.gitUrl.toString('https').replace(/(\.git)$/, '');
+        return this.gitUrl.toString(providerProtocol).replace(/(\.git)$/, '');
     }
 
     /**
@@ -90,6 +90,7 @@ class VisualStudio extends BaseProvider {
 
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
 const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
+const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
 
 const providers = {
     [gitHubDomain]: GitHub,

@@ -80,6 +80,38 @@ suite('gitProvider', function () {
                 });
             });
         });
+
+        suite('with custom domain and protocol', function () {
+            const testDomain = 'github.testdomain.com';
+            const testProtocol = 'http';
+            const remoteUrl = `https://${testDomain}/${userName}/${repoName}.git`;
+
+            const fakeVscode = {
+                workspace: {
+                    getConfiguration: function () {
+                        return {
+                            get: function (configKey) {
+                                if (configKey === 'gitHubDomain') {
+                                    return testDomain;
+                                } else if (providerProtocol === 'providerProtocol') {
+                                    return testProtocol;
+                                }
+                            },
+                        };
+                    },
+                },
+            };
+            const gitProvider = proxyquire('../src/gitProvider.js', { vscode: fakeVscode });
+            const provider = gitProvider(remoteUrl);
+
+            suite('#webUrl(branch, filePath)', function () {
+                test('should return custom domain URL', function () {
+                    const expectedUrl = `http://${testDomain}/${userName}/${repoName}/blob/${branch}${filePath}`;
+                    const webUrl = provider.webUrl(branch, filePath);
+                    expect(webUrl).to.equal(expectedUrl);
+                });
+            });
+        });
     });
 
     suite('Bitbucket', function () {

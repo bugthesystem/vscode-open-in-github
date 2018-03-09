@@ -54,7 +54,7 @@
             "string"
           ],
           "default": "github.com",
-          "description": "Configure a custom Github domain. Useful for Github entreprise"
+          "description": "Configure a custom Github domain. Useful for Github enterprise"
         },
         "openInGitHub.requireSelectionForLines": {
           "type": "boolean",
@@ -69,7 +69,16 @@
               "github",
               "bitbucket"
           ],
-          "description": "specify the provider type in Custom Site"
+          "description": "Specify the provider type in Custom Site"
+        },
+        "openInGitHub.providerProtocol": {
+          "type": "string",
+          "default": "https",
+          "enum": [
+              "https",
+              "http"
+          ],
+          "description": "Specify the provider protocol for custom sites or Github enterprise"
         }
       }
     },

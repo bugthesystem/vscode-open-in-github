@@ -4,6 +4,7 @@ const workspace = require('vscode').workspace
 const querystring = require('querystring');
 const gitUrlParse = require('git-url-parse');
 const path = require('path');
+const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL');
 
 class BaseProvider {
     constructor(gitUrl, sha) {
@@ -34,12 +35,16 @@ class BaseProvider {
 
 class GitHub extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
-        if (filePath) {
-            return `${this.baseUrl}/blob/${branch}${filePath}` + (line ? '#L' + line : '') + (endLine ? '-L' + endLine : '');
+        let blob = branch;
+        if (useCommitSHAInURL) {
+            blob = this.sha;
         }
-        return `${this.baseUrl}/tree/${branch}`;
+        if (filePath) {
+            return `${this.baseUrl}/blob/${blob}${filePath}` + (line ? '#L' + line : '') + (endLine ? '-L' + endLine : '');
+        }
+        return `${this.baseUrl}/tree/${blob}`;
     }
-    prUrl(branch){
+    prUrl(branch) {
         return `${this.baseUrl}/pull/new/${branch}`;
     }
 }
@@ -49,7 +54,7 @@ class Bitbucket extends BaseProvider {
         const fileName = path.basename(filePath)
         return `${this.baseUrl}/src/${this.sha}` + (filePath ? `${filePath}` : '') + (line ? `#${fileName}-${line}` : '');
     }
-    prUrl(branch){
+    prUrl(branch) {
         return `${this.baseUrl}/pull-requests/new?source=${branch}`;
     }
 }
@@ -61,7 +66,7 @@ class GitLab extends BaseProvider {
         }
         return `${this.baseUrl}/tree/${branch}`;
     }
-    prUrl(branch){
+    prUrl(branch) {
         //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
         //`${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
         throw new Error(`Doesn't support Merge Request from URL in GitLab yet`);
@@ -86,7 +91,7 @@ class VisualStudio extends BaseProvider {
         return `${this.baseUrl}?${querystring.stringify(query)}`;
     }
 
-    prUrl(branch){
+    prUrl(branch) {
         throw new Error(`Doesn't support Merge Request from URL in VisualStudio.com yet`);
     }
 }
@@ -113,7 +118,7 @@ function gitProvider(remoteUrl, sha) {
     for (const domain of Object.keys(providers)) {
         if (domain === gitUrl.resource || domain === gitUrl.source) {
             return new providers[domain](gitUrl, sha);
-        }else if( domain.indexOf(providerType) > -1 ){
+        } else if (domain.indexOf(providerType) > -1) {
             return new providers[domain](gitUrl, sha);
         }
     }

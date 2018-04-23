@@ -61,6 +61,11 @@
           "default": false,
           "description": "If enabled, the copied or opened URL won't include line number(s) unless there's an active selection"
         },
+        "openInGitHub.useCommitSHAInURL": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled, use commit SHA instead of branch"
+        },
         "openInGitHub.providerType": {
           "type": "string",
           "default": "gitlab",

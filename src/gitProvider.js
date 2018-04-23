@@ -3,10 +3,12 @@
 const workspace = require('vscode').workspace
 const querystring = require('querystring');
 const gitUrlParse = require('git-url-parse');
+const path = require('path');
 
 class BaseProvider {
-    constructor(gitUrl) {
+    constructor(gitUrl, sha) {
         this.gitUrl = gitUrl;
+        this.sha = sha;
     }
 
     get baseUrl() {
@@ -44,7 +46,8 @@ class GitHub extends BaseProvider {
 
 class Bitbucket extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
-        return `${this.baseUrl}/src/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#cl-${line}` : '');
+        const fileName = path.basename(filePath)
+        return `${this.baseUrl}/src/${this.sha}` + (filePath ? `${filePath}` : '') + (line ? `#${fileName}-${line}` : '');
     }
     prUrl(branch){
         return `${this.baseUrl}/pull-requests/new?source=${branch}`;
@@ -105,13 +108,13 @@ const providers = {
  * @param {string} remoteUrl
  * @return {BaseProvider|null}
  */
-function gitProvider(remoteUrl) {
+function gitProvider(remoteUrl, sha) {
     const gitUrl = gitUrlParse(remoteUrl);
     for (const domain of Object.keys(providers)) {
         if (domain === gitUrl.resource || domain === gitUrl.source) {
-            return new providers[domain](gitUrl);
+            return new providers[domain](gitUrl, sha);
         }else if( domain.indexOf(providerType) > -1 ){
-            return new providers[domain](gitUrl);
+            return new providers[domain](gitUrl, sha);
         }
     }
     throw new Error('unknown Provider');

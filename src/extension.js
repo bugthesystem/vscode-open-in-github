@@ -56,7 +56,7 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                 }
 
                 try {
-                    provider = gitProvider(rawUri);
+                    provider = gitProvider(rawUri, sha);
                 } catch (e) {
                     let errmsg = e.toString();
                     Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);

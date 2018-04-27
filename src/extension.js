@@ -34,58 +34,58 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
                     provider = null,
                     remoteName;
 
-                var branch = 'master';
+                gitRev.branch(repoDir, function (branchErr, branch) {
+                    // Check to see if the branch has a configured remote
+                    configuredBranch = config[`branch "${branch}"`];
 
-                // Check to see if the branch has a configured remote
-                configuredBranch = config[`branch "${branch}"`];
-
-                if (configuredBranch) {
-                    // Use the current branch's configured remote
-                    remoteName = configuredBranch.remote;
-                    rawUri = config[`remote "${remoteName}"`].url;
-                } else {
-                    const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
-                    if (remotes.length > 0) {
-                        rawUri = config[remotes[0]].url;
+                    if (configuredBranch) {
+                        // Use the current branch's configured remote
+                        remoteName = configuredBranch.remote;
+                        rawUri = config[`remote "${remoteName}"`].url;
+                    } else {
+                        const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
+                        if (remotes.length > 0) {
+                            rawUri = config[remotes[0]].url;
+                        }
                     }
-                }
 
-                if (!rawUri) {
-                    Window.showWarningMessage(`No remote found on branch.`);
-                    return;
-                }
-
-                try {
-                    provider = gitProvider(rawUri, sha);
-                } catch (e) {
-                    let errmsg = e.toString();
-                    Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
-                    return;
-                }
-
-                let formattedFilePath = path.relative(repoDir, fileFsPath).replace(/\\/g, '/');
-                formattedFilePath = formattedFilePath.replace(/\s{1}/g, '%20');
-
-                let subdir = repoDir !== fileFsPath ? '/' + formattedFilePath : '';
-
-                if (pr) {
-                    try {
-                        cb(provider.prUrl(branch));
-                    } catch (e) {
-                        Window.showWarningMessage(e.toString());
+                    if (!rawUri) {
+                        Window.showWarningMessage(`No remote found on branch.`);
                         return;
                     }
-                } else {
-                    if (lines) {
-                        if (lines[0] == lines[1]) {
-                            cb(provider.webUrl(sha, subdir, lines[0]));
-                        } else {
-                            cb(provider.webUrl(sha, subdir, lines[0], lines[1]));
+
+                    try {
+                        provider = gitProvider(rawUri, sha);
+                    } catch (e) {
+                        let errmsg = e.toString();
+                        Window.showWarningMessage(`Unknown Git provider. ${errmsg}`);
+                        return;
+                    }
+
+                    let formattedFilePath = path.relative(repoDir, fileFsPath).replace(/\\/g, '/');
+                    formattedFilePath = formattedFilePath.replace(/\s{1}/g, '%20');
+
+                    let subdir = repoDir !== fileFsPath ? '/' + formattedFilePath : '';
+
+                    if (pr) {
+                        try {
+                            cb(provider.prUrl(branch));
+                        } catch (e) {
+                            Window.showWarningMessage(e.toString());
+                            return;
                         }
                     } else {
-                        cb(provider.webUrl(sha, subdir));
+                        if (lines) {
+                            if (lines[0] == lines[1]) {
+                                cb(provider.webUrl(sha, subdir, lines[0]));
+                            } else {
+                                cb(provider.webUrl(sha, subdir, lines[0], lines[1]));
+                            }
+                        } else {
+                            cb(provider.webUrl(sha, subdir));
+                        }
                     }
-                }
+                });
             });
         });
 }

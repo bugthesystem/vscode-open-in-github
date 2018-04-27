@@ -55,7 +55,10 @@ class Bitbucket extends BaseProvider {
         return `${this.baseUrl}/src/${this.sha}` + (filePath ? `${filePath}` : '') + (line ? `#${fileName}-${line}` : '');
     }
     prUrl(branch) {
-        return `${this.baseUrl}/pull-requests/new?source=${branch}`;
+        const repo = this.baseUrl.replace(`${providerProtocol}://bitbucket.org/`, '')
+        return `${this.baseUrl}/pull-requests/new?source=${repo}%3A%3A${branch}&dest=${repo}%3A%3Aintegration`;
+        // looks like this:
+        // https://bitbucket.org/${org/repo}/pull-requests/new?source=${org/repo}%3A%3A${branch}&dest=${org/repo}%3A%3A${destBranch}
     }
 }
 
@@ -68,7 +71,7 @@ class GitLab extends BaseProvider {
     }
     prUrl(branch) {
         //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
-        //`${this.baseUrl}/merge-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
+        //`${this.baseUrl}/pull-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
         throw new Error(`Doesn't support Merge Request from URL in GitLab yet`);
     }
 }
@@ -99,6 +102,7 @@ class VisualStudio extends BaseProvider {
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
 const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
 const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
+const defaultPrBranch = workspace.getConfiguration('openInGitHub').get('defaultPullRequestBranch', 'integration')
 
 const providers = {
     [gitHubDomain]: GitHub,

@@ -93,7 +93,7 @@ suite('gitProvider', function () {
                             get: function (configKey) {
                                 if (configKey === 'gitHubDomain') {
                                     return testDomain;
-                                } else if (providerProtocol === 'providerProtocol') {
+                                } else if (configKey === 'providerProtocol') {
                                     return testProtocol;
                                 }
                             },

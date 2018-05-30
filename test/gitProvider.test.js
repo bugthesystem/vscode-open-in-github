@@ -62,8 +62,12 @@ suite('gitProvider', function () {
                 workspace: {
                     getConfiguration: function () {
                         return {
-                            get: function () {
-                                return testDomain;
+                            get: function (configKey) {
+                                if (configKey === 'gitHubDomain') {
+                                    return testDomain;
+                                } else if (configKey === 'useCommitSHAInURL') {
+                                    return false;
+                                }
                             },
                         };
                     },

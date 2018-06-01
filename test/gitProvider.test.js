@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const querystring = require('querystring');
 const expect = require('chai').expect;
 const proxyquire = require('proxyquire');
@@ -9,6 +10,7 @@ const gitProvider = require('../src/gitProvider');
 const userName = 'testUser';
 const repoName = 'testRepo';
 const filePath = '/sampleDirectory/sampleTestFile.txt';
+const fileName = path.basename(filePath);
 const branch = 'master';
 const line = 123;
 
@@ -120,11 +122,12 @@ suite('gitProvider', function () {
 
     suite('Bitbucket', function () {
         const remoteUrl = `https://bitbucket.org/${userName}/${repoName}.git`;
-        const provider = gitProvider(remoteUrl);
+        const sha = 'f9f2dcbf56e88ee3612c9890a6df1cfd4dde8c5e';
+        const provider = gitProvider(remoteUrl, sha);
 
         suite('#webUrl(branch, filePath)', function () {
             test('should returns file URL', function () {
-                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${branch}${filePath}`;
+                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${sha}${filePath}`;
                 const webUrl = provider.webUrl(branch, filePath);
                 expect(webUrl).to.equal(expectedUrl);
             });
@@ -132,7 +135,7 @@ suite('gitProvider', function () {
 
         suite('#webUrl(branch, filePath, line)', function () {
             test('should returns file URL with line hash', function () {
-                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${branch}${filePath}#cl-${line}`;
+                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${sha}${filePath}#${fileName}-${line}`;
                 const webUrl = provider.webUrl(branch, filePath, line);
                 expect(webUrl).to.equal(expectedUrl);
             });
@@ -140,19 +143,19 @@ suite('gitProvider', function () {
 
         suite('#webUrl(branch)', function () {
             test('should returns repository root URL', function () {
-                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${branch}`;
-                const webUrl = provider.webUrl(branch);
+                const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${sha}`;
+                const webUrl = provider.webUrl(branch, '');
                 expect(webUrl).to.equal(expectedUrl);
             });
         });
 
         suite('with ssh remote URL', function () {
             const remoteUrl = `git@bitbucket.org:${userName}/${repoName}.git`;
-            const provider = gitProvider(remoteUrl);
+            const provider = gitProvider(remoteUrl, sha);
 
             suite('#webUrl(branch, filePath)', function () {
                 test('should returns HTTPS URL', function () {
-                    const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${branch}${filePath}`;
+                    const expectedUrl = `https://bitbucket.org/${userName}/${repoName}/src/${sha}${filePath}`;
                     const webUrl = provider.webUrl(branch, filePath);
                     expect(webUrl).to.equal(expectedUrl);
                 });

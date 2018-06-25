@@ -65,7 +65,7 @@ class Bitbucket extends BaseProvider {
 class GitLab extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
         if (filePath) {
-            return `${this.baseUrl}/blob/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '');
+            return `${this.baseUrl}/blob/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '') + (endLine ? '-' + endLine : '');
         }
         return `${this.baseUrl}/tree/${branch}`;
     }

@@ -7,9 +7,10 @@ const path = require('path');
 const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL');
 
 class BaseProvider {
-    constructor(gitUrl, sha) {
+    constructor(gitUrl, sha, branch) {
         this.gitUrl = gitUrl;
         this.sha = sha;
+        this.branch = branch;
     }
 
     get baseUrl() {
@@ -83,7 +84,7 @@ class VisualStudio extends BaseProvider {
 
     webUrl(branch, filePath, line, endLine) {
         let query = {
-            version: `GB${branch}`,
+            version: `GB${this.branch}`,
         };
         if (filePath) {
             query['path'] = filePath;
@@ -100,7 +101,7 @@ class VisualStudio extends BaseProvider {
 }
 
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
-const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
+const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown') || 'unknown';
 const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
 const defaultPrBranch = workspace.getConfiguration('openInGitHub').get('defaultPullRequestBranch', 'integration')
 
@@ -117,13 +118,13 @@ const providers = {
  * @param {string} remoteUrl
  * @return {BaseProvider|null}
  */
-function gitProvider(remoteUrl, sha) {
+function gitProvider(remoteUrl, sha, branch) {
     const gitUrl = gitUrlParse(remoteUrl);
     for (const domain of Object.keys(providers)) {
         if (domain === gitUrl.resource || domain === gitUrl.source) {
-            return new providers[domain](gitUrl, sha);
+            return new providers[domain](gitUrl, sha, branch);
         } else if (domain.indexOf(providerType) > -1) {
-            return new providers[domain](gitUrl, sha);
+            return new providers[domain](gitUrl, sha, branch);
         }
     }
     throw new Error('unknown Provider');

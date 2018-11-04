@@ -72,7 +72,8 @@
           "enum": [
               "gitlab",
               "github",
-              "bitbucket"
+              "bitbucket",
+              "custom"
           ],
           "description": "Specify the provider type in Custom Site"
         },
@@ -84,6 +85,26 @@
               "http"
           ],
           "description": "Specify the provider protocol for custom sites or Github enterprise"
+        },
+        "openInGitHub.alwaysOpenInDefaultBranch": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled, web url will always point to default branch instead of local commit SHA or local branch"
+        },
+        "openInGitHub.customProviderPath": {
+          "type": "string",
+          "default": "https://git-repo-domain:git-path/custom-path/",
+          "description": "Configure a custom path to the git repo your project is hosted"
+        },
+        "openInGitHub.customBlobPath": {
+          "type": "string",
+          "default": "+",
+          "description": "Configure a custom blob path to connect git path and file path"
+        },
+        "openInGitHub.customLinePrefix": {
+          "type": "string",
+          "default": "#",
+          "description": "Configure a custom line number prefix"
         },
         "openInGitHub.defaultPullRequestBranch": {
           "type": "string",

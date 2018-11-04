@@ -99,16 +99,41 @@ class VisualStudio extends BaseProvider {
     }
 }
 
+class CustomProvider extends BaseProvider {
+    constructor(gitUrl, sha) {
+        super(gitUrl, sha);
+        this.customProviderPath = workspace.getConfiguration('openInGitHub').get('customProviderPath', '');
+        this.customBlobPath = workspace.getConfiguration('openInGitHub').get('customBlobPath', '+');
+        this.customLinePrefix = workspace.getConfiguration('openInGitHub').get('customLinePrefix', '#');
+    }
+    get baseUrl() {
+        return `${this.customProviderPath}${this.gitUrl.pathname}`.replace(/\.git/, '');
+    }
+    webUrl(branch, filePath, line, endLine) {
+        if (filePath) {
+            const lineURL = line ? `${this.customLinePrefix}${line}` : '';
+            const branchPath = alwaysOpenInDefaultBranch ? defaultPrBranch : branch;
+            return `${this.baseUrl}/${this.customBlobPath}/${branchPath}${filePath}${lineURL}`;
+        }
+        return `${this.baseUrl}/tree/${branch}`;
+    }
+    prUrl(branch) {
+        throw new Error(`Doesn't support Merge Request from URL in custom git repo yet`);
+    }
+}
+
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
 const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
 const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
 const defaultPrBranch = workspace.getConfiguration('openInGitHub').get('defaultPullRequestBranch', 'integration')
+const alwaysOpenInDefaultBranch = workspace.getConfiguration('openInGitHub').get('alwaysOpenInDefaultBranch', false);
 
 const providers = {
     [gitHubDomain]: GitHub,
     'bitbucket.org': Bitbucket,
     'gitlab.com': GitLab,
     'visualstudio.com': VisualStudio,
+    'custom': CustomProvider
 };
 
 /**

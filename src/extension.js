@@ -36,7 +36,7 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
 
                 gitRev.branch(repoDir, function (branchErr, branch) {
                     // Check to see if the branch has a configured remote
-                    configuredBranch = config[`branch "${branch}"`];
+                    configuredBranch = config[`remote "${branch}"`];
 
                     if (configuredBranch) {
                         // Use the current branch's configured remote

@@ -72,7 +72,8 @@
           "enum": [
               "gitlab",
               "github",
-              "bitbucket"
+              "bitbucket",
+              "custom"
           ],
           "description": "Specify the provider type in Custom Site"
         },
@@ -80,8 +81,8 @@
           "type": "string",
           "default": "https",
           "enum": [
-              "https",
-              "http"
+            "https",
+            "http"
           ],
           "description": "Specify the provider protocol for custom sites or Github enterprise"
         },
@@ -89,7 +90,6 @@
           "type": "string",
           "default": "integration",
           "description": "Specify the default destination branch for pull requests"
-
         }
       }
     },
@@ -141,7 +141,7 @@
     "chai": "^3.5.0",
     "proxyquire": "^1.7.10",
     "typescript": "^1.6.2",
-    "vscode": "0.11.13"
+    "vscode": "1.1.21"
   },
   "dependencies": {
     "copy-paste": "^1.1.4",

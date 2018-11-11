@@ -1,4 +1,4 @@
-![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")  
+![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")
 
 **Supports :** GitHub, Bitbucket, Visualstudio.com and GitLab
 
@@ -8,7 +8,7 @@
 
 ## Install
 
-**Tested with VsCode 0.10.1**  
+**Tested with VsCode 0.10.1**
 
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
 
@@ -76,6 +76,20 @@ Add following line into workspace settings;
   "openInGitHub.useCommitSHAInURL": false,
   "openInGitHub.providerType": "gitlab", //github, gitlab, bitbucket, ...
   "openInGitHub.providerProtocol": "https" //https, http. Useful for custom domains that don't support https. Defaults to https.
+}
+```
+
+Custom Settings
+
+```js
+{
+  "openInGitHub.providerType": "custom", // important, otherwise the following settings will not be read
+  "openInGitHub.customProviderPath": "https://your-git-repo-hosting-domain:port/path-to-the-repo",
+  "openInGitHub.customBlobPath": "+", // for example, this is `blob` in gitlab
+  "openInGitHub.customLinePrefix": "#", // for example, this is `#L12` instead of just `#12` in most git hosting service
+  "openInGitHub.defaultPullRequestBranch": "master", // for example, this could be `development`
+  // optional
+  "openInGitHub.alwaysOpenInDefaultBranch": true // if you always work on your local branch, and checking it online will always get 404
 }
 ```
 

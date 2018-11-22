@@ -200,11 +200,10 @@ function openPrGitProvider(args) {
     branchOnCallingContext(args, open, true);
 }
 
-//TODO: rename openInGitHub to openInGitProvider
 function activate(context) {
-    context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitProvider));
-    context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard));
-    context.subscriptions.push(commands.registerCommand('extension.openPrGitProvider', openPrGitProvider));
+    commands.registerCommand('extension.openInGitHub', openInGitProvider);
+    commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard);
+    commands.registerCommand('extension.openPrGitProvider', openPrGitProvider);
 }
 
 exports.activate = activate;

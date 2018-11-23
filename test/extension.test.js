@@ -24,7 +24,7 @@ var absoluteSampleFilePath = fakeRepoPath + relativeSampleFilePath;
 
 var fakeUserName = "testUser";
 var fakeRepoName = "testRepo";
-
+var fakeSHA = "a9b854f5131a863ad47d3b6c6bbca8cd17a8aff3";
 
 function testClipboard(expectedClipboardContent) {
 	expect(paste()).to.be.equal(expectedClipboardContent, "Clipboard content doest not match.");
@@ -60,7 +60,7 @@ suite('GitHub Tests', function () {
 
 
 	test('Line', function () {
-		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/master/${relativeSampleFilePath}#L2`;
+		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/${fakeSHA}/${relativeSampleFilePath}#L2`;
 
 		return workspace.openTextDocument(absoluteSampleFilePath).then(function (workingDocument) {
 			return Window.showTextDocument(workingDocument);

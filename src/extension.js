@@ -180,7 +180,7 @@ function branchOnCallingContext(args, cb, pr) {
     if (Window.activeTextEditor) {
         getGitProviderLinkForCurrentEditorLines(cb);
     } else if (args && args.fsPath) {
-      getGitProviderLinkForFile(args.fsPath, cb);
+        getGitProviderLinkForFile(args.fsPath, cb);
     } else {
         // TODO: This missed in code review so should be refactored, it is broken.
         getGitProviderLinkForRepo(cb);

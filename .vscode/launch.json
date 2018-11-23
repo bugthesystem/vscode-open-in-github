@@ -21,8 +21,8 @@
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
 			"args": [
-        "${workspaceRoot}/test/sampleTestData",
         "--disable-extensions",
+        "${workspaceRoot}/test/sampleTestData",
 				"--extensionDevelopmentPath=${workspaceRoot}",
 				"--extensionTestsPath=${workspaceRoot}/test"
 			],

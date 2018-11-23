@@ -15,7 +15,6 @@ var copy = require('copy-paste').copy;
 var paste = require('copy-paste').paste;
 var fs = require("fs");
 
-
 var extensionID = 'ziyasal.vscode-open-in-github';
 var extension = extensions.getExtension(extensionID);
 var testsPath = extension.extensionPath + '/test/';

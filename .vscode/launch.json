@@ -22,9 +22,9 @@
 			"runtimeExecutable": "${execPath}",
 			"args": [
         "--disable-extensions",
-        "${workspaceRoot}/test/sampleTestData",
 				"--extensionDevelopmentPath=${workspaceRoot}",
-				"--extensionTestsPath=${workspaceRoot}/test"
+				"--extensionTestsPath=${workspaceRoot}/test",
+        "${workspaceRoot}/test/sampleTestData"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,

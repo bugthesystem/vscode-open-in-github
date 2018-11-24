@@ -68,11 +68,12 @@
         },
         "openInGitHub.providerType": {
           "type": "string",
-          "default": "gitlab",
+          "default": "unknown",
           "enum": [
             "gitlab",
             "github",
             "bitbucket",
+            "visualstudio.com",
             "custom"
           ],
           "description": "Specify the provider type in Custom Site"

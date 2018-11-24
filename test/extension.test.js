@@ -85,12 +85,12 @@ suite('GitHub Tests', function () {
 	});
 
 	test('Repo', function () {
-		var expectedRepoResult = `https://github.com/${fakeUserName}/${fakeRepoName}/tree/master`;
+		var expectedRepoResult = `https://github.com/${fakeUserName}/${fakeRepoName}/tree/${fakeSHA}`;
 
 		return commands.executeCommand("workbench.action.closeAllEditors")
 			.then(timeOut)
 			.then(function () {
-				return commands.executeCommand("extension.copyGitHubLinkToClipboard");
+        return commands.executeCommand("extension.copyGitHubLinkToClipboard");
 			})
 			.then(timeOut)
 			.then(function () {

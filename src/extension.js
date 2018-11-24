@@ -157,7 +157,7 @@ function getSelectedLines(editor) {
 }
 
 function getGitProviderLinkForRepo(cb) {
-    getGitProviderLink(cb);
+    getGitProviderLink(cb, workspace.rootPath);
 }
 
 function getGitProviderPullRequest(args, cb) {

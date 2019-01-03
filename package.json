@@ -3,7 +3,7 @@
   "displayName": "Open in GitHub, Bitbucket, Gitlab, VisualStudio.com !",
   "description": "Jump to a source code line in Github, Bitbucket, Gitlab, VisualStudio.com !",
   "icon": "images/icon_200.png",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "publisher": "ziyasal",
   "license": "SEE LICENSE IN LICENSE.md",
   "galleryBanner": {
@@ -153,7 +153,7 @@
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
-    "test:linuxOSX": "CODE_TESTS_WORKSPACE=$(cd \"$(dirname \"$0\")\" && pwd -P)/test/sampleTestData node ./node_modules/vscode/bin/test ",
+    "test:linuxOSX": "CODE_TESTS_WORKSPACE=$(pwd)/test/sampleTestData CODE_EXTENSIONS_PATH=$(pwd) node ./node_modules/vscode/bin/test",
     "test:windows": "cd && code -n %CD%/test/sampleTestData --extensionDevelopmentPath=%CD% --extensionTestsPath=%CD%/test --verbose",
     "test": "node ./testScript",
     "postinstall": "node ./node_modules/vscode/bin/install"

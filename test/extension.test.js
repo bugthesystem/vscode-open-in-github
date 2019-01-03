@@ -58,7 +58,6 @@ suite('GitHub Tests', function () {
 
 	setup(clearClipboard);
 
-
 	test('Line', function () {
 		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/${fakeSHA}/${relativeSampleFilePath}#L2`;
 

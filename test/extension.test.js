@@ -39,25 +39,19 @@ function setClipboardTo(content) {
 		copy(content, done);
 	};
 }
-var clearClipboard = setClipboardTo("");
-var restoreClipboardContent = setClipboardTo;
 
 suite('GitHub Tests', function () {
 	var originalClipboardContent;
 
 	suiteSetup(function () {
-		fs.renameSync(`${fakeRepoPath}git`, `${fakeRepoPath}.git`);
-    clearClipboard();
-		originalClipboardContent = paste();
+    fs.renameSync(`${fakeRepoPath}git`, `${fakeRepoPath}.git`);
+    setClipboardTo("");
 		return extension.activate()
 	});
 
 	suiteTeardown(function () {
 		fs.renameSync(`${fakeRepoPath}.git`, `${fakeRepoPath}git`);
-		restoreClipboardContent(originalClipboardContent);
 	});
-
-	setup(clearClipboard);
 
 	test('Line', function () {
 		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/${fakeSHA}/${relativeSampleFilePath}#L2`;

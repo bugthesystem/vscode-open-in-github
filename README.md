@@ -95,6 +95,20 @@ Custom Settings
 
 Have fun..
 
+## Debug Travis CI
+```bash
+  BUILDID="build-$RANDOM" && \
+  LATEST_GARNET_TAG_ID="1515445631-7dfb2e1" && \
+  INSTANCE="travisci/ci-garnet:packer-$LATEST_GARNET_TAG_ID" && \
+  docker run --name $BUILDID -dit $INSTANCE /sbin/init && \
+  docker exec -it $BUILDID bash -l
+  # to rerun last command: look for the last container with docker ps
+  su - travis # to use nvm and npm
+  # manually repliate the steps shown in the Travis Worker Log
+```
+
+Reference: [Stackoverflow](https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally)
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):

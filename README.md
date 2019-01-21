@@ -95,16 +95,26 @@ Custom Settings
 
 Have fun..
 
-## Debug Travis CI
+## Debug Travis CI locally
+
 ```bash
-  BUILDID="build-$RANDOM" && \
+  cd $your_vscode_open_in_github_local_directory_path
+
+  BUILD_ID="build-$RANDOM" && \
   LATEST_GARNET_TAG_ID="1515445631-7dfb2e1" && \
-  INSTANCE="travisci/ci-garnet:packer-$LATEST_GARNET_TAG_ID" && \
-  docker run --name $BUILDID -dit $INSTANCE /sbin/init && \
+  MAPPED_DOCKER_PATH=/home/travis/vscode-open-in-github && \
+  docker run \
+    -name $BUILD_ID
+    -v $(pwd):$MAPPED_DOCKER_PATH \
+    -dit "travisci/ci-garnet:packer-$LATEST_GARNET_TAG_ID" /sbin/init && \
   docker exec -it $BUILDID bash -l
   # to rerun last command: look for the last container with docker ps
+
   su - travis # to use nvm and npm
-  # manually repliate the steps shown in the Travis Worker Log
+
+  cd /vscode-open-in-github
+
+  # replicate steps in either A) .travis.yml B) worker log in Travis CI
 ```
 
 Reference: [Stackoverflow](https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally)

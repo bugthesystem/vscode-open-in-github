@@ -47,6 +47,7 @@ suite('GitHub Tests', function () {
 
 	suiteSetup(function () {
 		fs.renameSync(`${fakeRepoPath}git`, `${fakeRepoPath}.git`);
+    clearClipboard();
 		originalClipboardContent = paste();
 		return extension.activate()
 	});

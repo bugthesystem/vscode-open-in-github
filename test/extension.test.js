@@ -15,7 +15,6 @@ var copy = require('copy-paste').copy;
 var paste = require('copy-paste').paste;
 var fs = require("fs");
 
-
 var extensionID = 'ziyasal.vscode-open-in-github';
 var extension = extensions.getExtension(extensionID);
 var testsPath = extension.extensionPath + '/test/';
@@ -25,7 +24,7 @@ var absoluteSampleFilePath = fakeRepoPath + relativeSampleFilePath;
 
 var fakeUserName = "testUser";
 var fakeRepoName = "testRepo";
-
+var fakeSHA = "a9b854f5131a863ad47d3b6c6bbca8cd17a8aff3";
 
 function testClipboard(expectedClipboardContent) {
 	expect(paste()).to.be.equal(expectedClipboardContent, "Clipboard content doest not match.");
@@ -40,28 +39,22 @@ function setClipboardTo(content) {
 		copy(content, done);
 	};
 }
-var clearClipboard = setClipboardTo("");
-var restoreClipboardContent = setClipboardTo;
 
 suite('GitHub Tests', function () {
 	var originalClipboardContent;
 
 	suiteSetup(function () {
-		fs.renameSync(`${fakeRepoPath}git`, `${fakeRepoPath}.git`);
-		originalClipboardContent = paste();
+    fs.renameSync(`${fakeRepoPath}git`, `${fakeRepoPath}.git`);
+    setClipboardTo("");
 		return extension.activate()
 	});
 
 	suiteTeardown(function () {
 		fs.renameSync(`${fakeRepoPath}.git`, `${fakeRepoPath}git`);
-		restoreClipboardContent(originalClipboardContent);
 	});
 
-	setup(clearClipboard);
-
-
 	test('Line', function () {
-		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/master/${relativeSampleFilePath}#L2`;
+		var expectedLineResult = `https://github.com/${fakeUserName}/${fakeRepoName}/blob/${fakeSHA}/${relativeSampleFilePath}#L2`;
 
 		return workspace.openTextDocument(absoluteSampleFilePath).then(function (workingDocument) {
 			return Window.showTextDocument(workingDocument);
@@ -86,12 +79,12 @@ suite('GitHub Tests', function () {
 	});
 
 	test('Repo', function () {
-		var expectedRepoResult = `https://github.com/${fakeUserName}/${fakeRepoName}/tree/master`;
+		var expectedRepoResult = `https://github.com/${fakeUserName}/${fakeRepoName}/tree/${fakeSHA}`;
 
 		return commands.executeCommand("workbench.action.closeAllEditors")
 			.then(timeOut)
 			.then(function () {
-				return commands.executeCommand("extension.copyGitHubLinkToClipboard");
+        return commands.executeCommand("extension.copyGitHubLinkToClipboard");
 			})
 			.then(timeOut)
 			.then(function () {

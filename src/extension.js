@@ -36,7 +36,7 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
 
                 gitRev.branch(repoDir, function (branchErr, branch) {
                     // Check to see if the branch has a configured remote
-                    configuredBranch = config[`branch "${branch}"`];
+                    configuredBranch = config[`remote "${branch}"`];
 
                     if (configuredBranch) {
                         // Use the current branch's configured remote
@@ -157,7 +157,7 @@ function getSelectedLines(editor) {
 }
 
 function getGitProviderLinkForRepo(cb) {
-    getGitProviderLink(cb);
+    getGitProviderLink(cb, workspace.rootPath);
 }
 
 function getGitProviderPullRequest(args, cb) {
@@ -180,7 +180,7 @@ function branchOnCallingContext(args, cb, pr) {
     if (Window.activeTextEditor) {
         getGitProviderLinkForCurrentEditorLines(cb);
     } else if (args && args.fsPath) {
-      getGitProviderLinkForFile(args.fsPath, cb);
+        getGitProviderLinkForFile(args.fsPath, cb);
     } else {
         // TODO: This missed in code review so should be refactored, it is broken.
         getGitProviderLinkForRepo(cb);
@@ -200,11 +200,10 @@ function openPrGitProvider(args) {
     branchOnCallingContext(args, open, true);
 }
 
-//TODO: rename openInGitHub to openInGitProvider
 function activate(context) {
-    context.subscriptions.push(commands.registerCommand('extension.openInGitHub', openInGitProvider));
-    context.subscriptions.push(commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard));
-    context.subscriptions.push(commands.registerCommand('extension.openPrGitProvider', openPrGitProvider));
+    commands.registerCommand('extension.openInGitHub', openInGitProvider);
+    commands.registerCommand('extension.copyGitHubLinkToClipboard', copyGitProviderLinkToClipboard);
+    commands.registerCommand('extension.openPrGitProvider', openPrGitProvider);
 }
 
 exports.activate = activate;

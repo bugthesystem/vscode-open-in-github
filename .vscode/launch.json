@@ -12,7 +12,7 @@
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/src",
+			"outFiles": ["${workspaceRoot}/src"],
 			"preLaunchTask": "npm"
 		},
 		{
@@ -21,13 +21,14 @@
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
 			"args": [
-				"${workspaceRoot}/test/sampleTestData",
+        "--disable-extensions",
 				"--extensionDevelopmentPath=${workspaceRoot}",
-				"--extensionTestsPath=${workspaceRoot}/test"
+				"--extensionTestsPath=${workspaceRoot}/test",
+        "${workspaceRoot}/test/sampleTestData"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/src",
+			"outFiles": ["${workspaceRoot}/src"],
 			"preLaunchTask": "npm"
 		}
 	]

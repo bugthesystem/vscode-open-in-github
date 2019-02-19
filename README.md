@@ -2,7 +2,7 @@
 
 **Supports :** GitHub, Bitbucket, Visualstudio.com and GitLab
 
-> Extension for Visual Studio Code which can be used to jump to a source code line in Github, Bitbucket, Visualstudio.com and GitLab
+> Extension for Visual Studio Code which can be used to jump to a source code line in GitHub, Bitbucket, Visualstudio.com and GitLab
 
 [![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github) [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
 
@@ -48,7 +48,7 @@ Press <kbd>F1</kbd> and type `Copy GitHub link to clipboard`.
 
 ![copy](screenshots/copy.png?raw=true "Copy function")
 
-(The URL for Github will also include line ranges if there are lines selected in the editor)
+(The URL for GitHub will also include line ranges if there are lines selected in the editor)
 
 Press <kbd>F1</kbd> and type `Open Pull Request`.
 

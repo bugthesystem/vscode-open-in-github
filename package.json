@@ -1,7 +1,7 @@
 {
   "name": "vscode-open-in-github",
-  "displayName": "Open in GitHub, Bitbucket, Gitlab, VisualStudio.com !",
-  "description": "Jump to a source code line in Github, Bitbucket, Gitlab, VisualStudio.com !",
+  "displayName": "Open in GitHub, Bitbucket, GitLab, VisualStudio.com !",
+  "description": "Jump to a source code line in GitHub, Bitbucket, GitLab, VisualStudio.com !",
   "icon": "images/icon_200.png",
   "version": "1.4.1",
   "publisher": "ziyasal",
@@ -47,14 +47,14 @@
     ],
     "configuration": {
       "type": "object",
-      "title": "Open in Github extension configuration",
+      "title": "Open in GitHub extension configuration",
       "properties": {
         "openInGitHub.gitHubDomain": {
           "type": [
             "string"
           ],
           "default": "github.com",
-          "description": "Configure a custom Github domain. Useful for Github enterprise"
+          "description": "Configure a custom GitHub domain. Useful for GitHub Enterprise"
         },
         "openInGitHub.requireSelectionForLines": {
           "type": "boolean",
@@ -85,7 +85,7 @@
             "https",
             "http"
           ],
-          "description": "Specify the provider protocol for custom sites or Github enterprise"
+          "description": "Specify the provider protocol for custom sites or GitHub Enterprise"
         },
         "openInGitHub.alwaysOpenInDefaultBranch": {
           "type": "boolean",

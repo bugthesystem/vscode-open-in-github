@@ -172,7 +172,7 @@
     "find-parent-dir": "^0.3.0",
     "git-rev-2": "^0.1.0",
     "git-url-parse": "^11.1.1",
-    "open": "0.0.5",
+    "open": "6.0.0",
     "parse-git-config": "^0.3.1"
   }
 }

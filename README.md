@@ -1,8 +1,8 @@
-![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / Bitbucket / visualstudio.com")
+![vscode-open-in-github](images/icon_200.png?raw=true "Open in GitHub / GitLab / Gitea / Bitbucket / visualstudio.com")
 
-**Supports :** GitHub, Bitbucket, Visualstudio.com and GitLab
+**Supports :** GitHub, GitLab, Gitea, Bitbucket, and Visualstudio.com.
 
-> Extension for Visual Studio Code which can be used to jump to a source code line in GitHub, Bitbucket, Visualstudio.com and GitLab
+> Extension for Visual Studio Code which can be used to jump to a source code line in GitHub, GitLab, Gitea, Bitbucket and Visualstudio.com
 
 [![Build Status](https://travis-ci.org/ziyasal/vscode-open-in-github.svg?branch=master)](https://travis-ci.org/ziyasal/vscode-open-in-github) [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
 
@@ -74,8 +74,8 @@ Add following line into workspace settings;
   "openInGitHub.gitHubDomain": "your custom github domain here",
   "openInGitHub.requireSelectionForLines": false,   // If enabled, the copied or opened URL won't include line number(s) unless there's an active selection
   "openInGitHub.useCommitSHAInURL": false,
-  "openInGitHub.providerType": "gitlab", //github, gitlab, bitbucket, ...
-  "openInGitHub.providerProtocol": "https" //https, http. Useful for custom domains that don't support https. Defaults to https.
+  "openInGitHub.providerType": "gitlab", // github, gitlab, gitea, bitbucket, ...
+  "openInGitHub.providerProtocol": "https" // https, http. Useful for custom domains that don't support https. Defaults to https.
 }
 ```
 

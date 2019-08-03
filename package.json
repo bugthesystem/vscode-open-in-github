@@ -1,7 +1,7 @@
 {
   "name": "vscode-open-in-github",
-  "displayName": "Open in GitHub, Bitbucket, GitLab, VisualStudio.com !",
-  "description": "Jump to a source code line in GitHub, Bitbucket, GitLab, VisualStudio.com !",
+  "displayName": "Open in GitHub, GitLab, Gitea, Bitbucket, VisualStudio.com !",
+  "description": "Jump to a source code line in GitHub, GitLab, Gitea, Bitbucket, VisualStudio.com !",
   "icon": "images/icon_200.png",
   "version": "1.4.1",
   "publisher": "ziyasal",
@@ -56,6 +56,13 @@
           "default": "github.com",
           "description": "Configure a custom GitHub domain. Useful for GitHub Enterprise"
         },
+        "openInGitHub.giteaDomain": {
+          "type": [
+            "string"
+          ],
+          "default": "gitea.io",
+          "description": "Configure a custom Gitea domain"
+        },
         "openInGitHub.requireSelectionForLines": {
           "type": "boolean",
           "default": false,
@@ -70,8 +77,9 @@
           "type": "string",
           "default": "unknown",
           "enum": [
-            "gitlab",
             "github",
+            "gitlab",
+            "gitea",
             "bitbucket",
             "visualstudio.com",
             "custom"

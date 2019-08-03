@@ -4,7 +4,7 @@ const workspace = require('vscode').workspace
 const querystring = require('querystring');
 const gitUrlParse = require('git-url-parse');
 const path = require('path');
-const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL');
+const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL', false);
 
 class BaseProvider {
     constructor(gitUrl, sha) {
@@ -49,19 +49,6 @@ class GitHub extends BaseProvider {
     }
 }
 
-class Bitbucket extends BaseProvider {
-    webUrl(branch, filePath, line, endLine) {
-        const fileName = path.basename(filePath)
-        return `${this.baseUrl}/src/${this.sha}` + (filePath ? `${filePath}` : '') + (line ? `#${fileName}-${line}` : '');
-    }
-    prUrl(branch) {
-        const repo = this.baseUrl.replace(`${providerProtocol}://bitbucket.org/`, '')
-        return `${this.baseUrl}/pull-requests/new?source=${repo}%3A%3A${branch}&dest=${repo}%3A%3Aintegration`;
-        // looks like this:
-        // https://bitbucket.org/${org/repo}/pull-requests/new?source=${org/repo}%3A%3A${branch}&dest=${org/repo}%3A%3A${destBranch}
-    }
-}
-
 class GitLab extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
         if (filePath) {
@@ -73,6 +60,35 @@ class GitLab extends BaseProvider {
         //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
         //`${this.baseUrl}/pull-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
         throw new Error(`Doesn't support Merge Request from URL in GitLab yet`);
+    }
+}
+
+class Gitea extends BaseProvider {
+    webUrl(branch, filePath, line, endLine) {
+        let blobPath = `branch/${branch}`;
+        if (useCommitSHAInURL) {
+            blobPath = `commit/${this.sha}`;
+        }
+        if (filePath) {
+            return `${this.baseUrl}/src/${blobPath}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '');
+        }
+        return `${this.baseUrl}/src/${blobPath}`;
+    }
+    prUrl(branch) {
+        throw new Error(`Doesn't support Merge Request from URL in Gitea yet`);
+    }
+}
+
+class Bitbucket extends BaseProvider {
+    webUrl(branch, filePath, line, endLine) {
+        const fileName = path.basename(filePath)
+        return `${this.baseUrl}/src/${this.sha}` + (filePath ? `${filePath}` : '') + (line ? `#${fileName}-${line}` : '');
+    }
+    prUrl(branch) {
+        const repo = this.baseUrl.replace(`${providerProtocol}://bitbucket.org/`, '')
+        return `${this.baseUrl}/pull-requests/new?source=${repo}%3A%3A${branch}&dest=${repo}%3A%3Aintegration`;
+        // looks like this:
+        // https://bitbucket.org/${org/repo}/pull-requests/new?source=${org/repo}%3A%3A${branch}&dest=${org/repo}%3A%3A${destBranch}
     }
 }
 
@@ -123,6 +139,7 @@ class CustomProvider extends BaseProvider {
 }
 
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
+const giteaDomain = workspace.getConfiguration('openInGitHub').get('giteaDomain', 'gitea.io');
 const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
 const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
 const defaultPrBranch = workspace.getConfiguration('openInGitHub').get('defaultPullRequestBranch', 'integration')
@@ -130,8 +147,9 @@ const alwaysOpenInDefaultBranch = workspace.getConfiguration('openInGitHub').get
 
 const providers = {
     [gitHubDomain]: GitHub,
-    'bitbucket.org': Bitbucket,
     'gitlab.com': GitLab,
+    [giteaDomain]: Gitea,
+    'bitbucket.org': Bitbucket,
     'visualstudio.com': VisualStudio,
     'custom': CustomProvider
 };

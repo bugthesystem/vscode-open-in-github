@@ -4,7 +4,7 @@ const workspace = require('vscode').workspace
 const querystring = require('querystring');
 const gitUrlParse = require('git-url-parse');
 const path = require('path');
-const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL');
+const useCommitSHAInURL = workspace.getConfiguration('openInGitHub').get('useCommitSHAInURL', false);
 
 class BaseProvider {
     constructor(gitUrl, sha) {
@@ -76,6 +76,22 @@ class GitLab extends BaseProvider {
     }
 }
 
+class Gitea extends BaseProvider {
+    webUrl(branch, filePath, line, endLine) {
+        let blobPath = `branch/${branch}`;
+        if (useCommitSHAInURL) {
+            blobPath = `commit/${this.sha}`;
+        }
+        if (filePath) {
+            return `${this.baseUrl}/src/${blobPath}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '');
+        }
+        return `${this.baseUrl}/src/${blobPath}`;
+    }
+    prUrl(branch) {
+        throw new Error(`Doesn't support Merge Request from URL in Gitea yet`);
+    }
+}
+
 class VisualStudio extends BaseProvider {
     get baseUrl() {
         return `https://${this.gitUrl.resource}${this.gitUrl.pathname}`.replace(/\.git/, '');
@@ -123,6 +139,7 @@ class CustomProvider extends BaseProvider {
 }
 
 const gitHubDomain = workspace.getConfiguration('openInGitHub').get('gitHubDomain', 'github.com');
+const giteaDomain = workspace.getConfiguration('openInGitHub').get('giteaDomain', 'gitea.io');
 const providerType = workspace.getConfiguration('openInGitHub').get('providerType', 'unknown');
 const providerProtocol = workspace.getConfiguration('openInGitHub').get('providerProtocol', 'https');
 const defaultPrBranch = workspace.getConfiguration('openInGitHub').get('defaultPullRequestBranch', 'integration')
@@ -132,6 +149,7 @@ const providers = {
     [gitHubDomain]: GitHub,
     'bitbucket.org': Bitbucket,
     'gitlab.com': GitLab,
+    [giteaDomain]: Gitea,
     'visualstudio.com': VisualStudio,
     'custom': CustomProvider
 };

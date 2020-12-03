@@ -119,6 +119,9 @@ Have fun..
 
 Reference: [Stackoverflow](https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally)
 
+## Known Limitations
+- Extension doesn't currently works with Git worktrees
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):

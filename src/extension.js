@@ -103,11 +103,20 @@ function locateGitConfig(repoDir) {
                     if (err) {
                         reject(err);
                     }
+                    
                     var match = data.match(/gitdir: (.*)/)[1];
                     if (!match) {
                         reject('Unable to find gitdir in .git file');
                     }
                     var configPath = path.join(repoDir, match, 'config');
+                    
+                    // for worktrees traverse up to the main .git folder
+                    var workTreeMatch = match.match(/\.git\/worktrees*/);
+                    if(workTreeMatch) {
+                        var mainGitFolder = match.slice(0, workTreeMatch.index);
+                        var configPath = path.join(mainGitFolder, '.git','config');
+                        
+                    }
                     resolve(configPath);
                 });
             } else {
@@ -121,6 +130,7 @@ function readConfigFile(path) {
     return new Promise((resolve, reject) => {
         fs.readFile(path, 'utf-8', (err, data) => {
             if (err) {
+                console.error(err);
                 reject(err);
             }
             resolve(ini.parse(data));

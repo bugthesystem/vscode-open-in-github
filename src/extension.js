@@ -10,7 +10,6 @@ var Position = VsCode.Position;
 var path = require('path');
 var fs = require('fs');
 var open = require('open');
-var copy = require('copy-paste').copy;
 var gitRev = require('git-rev-2');
 var findParentDir = require('find-parent-dir');
 var ini = require('ini');
@@ -203,7 +202,7 @@ function openInGitProvider(args) {
 }
 
 function copyGitProviderLinkToClipboard(args) {
-    branchOnCallingContext(args, copy);
+    branchOnCallingContext(args, (content) => { VsCode.env.clipboard.writeText(content); });
 }
 
 function openPrGitProvider(args) {

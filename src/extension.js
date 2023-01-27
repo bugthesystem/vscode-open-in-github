@@ -94,29 +94,82 @@ function locateGitConfig(repoDir) {
         fs.lstat(path.join(repoDir, '.git'), (err, stat) => {
             if (err) {
                 reject(err);
+                return;
             }
+
             if (stat.isFile()) {
                 // .git may be a file, similar to symbolic link, containing "gitdir: <relative path to git dir>""
                 // this happens in gitsubmodules
                 fs.readFile(path.join(repoDir, '.git'), 'utf-8', (err, data) => {
                     if (err) {
                         reject(err);
+                        return;
                     }
-                    
+
                     var match = data.match(/gitdir: (.*)/)[1];
                     if (!match) {
                         reject('Unable to find gitdir in .git file');
+                        return;
                     }
+
+                    // set a fallback path
                     var configPath = path.join(repoDir, match, 'config');
-                    
+
                     // for worktrees traverse up to the main .git folder
-                    var workTreeMatch = match.match(/\.git\/worktrees*/);
-                    if(workTreeMatch) {
-                        var mainGitFolder = match.slice(0, workTreeMatch.index);
-                        var configPath = path.join(mainGitFolder, '.git','config');
-                        
+                    var standardWorkTreeMatch = match.match(/\/\.git\/worktrees\//);
+                    if(standardWorkTreeMatch) {
+                        var mainGitFolder = match.slice(0, standardWorkTreeMatch.index);
+
+                        resolve(path.join(mainGitFolder, '.git', 'config'));
+                        return;
                     }
-                    resolve(configPath);
+
+                    // for worktrees in a bare repository check every worktrees folder
+                    var bareWorkTreeMatches = match.matchAll(/\/worktrees\//g);
+                    if(bareWorkTreeMatches) {
+                        // generate promises to look for a file named config beside each matched worktrees folder
+                        var fileCheckPromises = [...bareWorkTreeMatches]
+                            .map((bareWorkTreeMatch) =>
+                                new Promise((innerResolve, innerReject) => {
+                                    var mainGitFolder = match.slice(0, bareWorkTreeMatch.index);
+
+                                    fs.lstat(path.join(mainGitFolder, 'HEAD'), (err, stat) => {
+                                        if (!err && stat.isFile()) {
+                                            fs.lstat(path.join(mainGitFolder, 'config'), (err, stat) => {
+                                                if (!err && stat.isFile()) {
+                                                    innerResolve(path.join(mainGitFolder, 'config'));
+                                                }
+                                                else {
+                                                    innerReject();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            innerReject();
+                                        }
+                                    });
+                                })
+                            );
+
+                        return Promise
+                            .allSettled(fileCheckPromises)
+                            .then((results) => {
+                                var lastConfigPath = results
+                                    .filter((result) => result.status === 'fulfilled')
+                                    .pop();
+
+                                // prefer the most deeply nested 'config' file that is beside a 'worktrees' folder
+                                if (lastConfigPath) {
+                                    resolve(lastConfigPath.value);
+                                }
+                                else {
+                                    resolve(configPath);
+                                }
+                            });
+                    }
+                    else {
+                        resolve(configPath);
+                    }
                 });
             } else {
                 resolve(path.join(repoDir, '.git', 'config'));

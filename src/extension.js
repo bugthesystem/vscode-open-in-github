@@ -113,7 +113,7 @@ function locateGitConfig(repoDir) {
                     }
 
                     // set a fallback path
-                    var configPath = path.join(repoDir, match, 'config');
+                    var configPath = path.isAbsolute(match) ? path.join(match, 'config') : path.join(repoDir, match, 'config');
 
                     // for worktrees traverse up to the main .git folder
                     var standardWorkTreeMatch = match.match(/\/\.git\/worktrees\//);

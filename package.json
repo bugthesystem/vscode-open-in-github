@@ -126,17 +126,20 @@
       {
         "command": "extension.openInGitHub",
         "key": "ctrl+l g",
-        "mac": "ctrl+l g"
+        "mac": "ctrl+l g",
+        "when": "!terminalFocus"
       },
       {
         "command": "extension.copyGitHubLinkToClipboard",
         "key": "ctrl+l c",
-        "mac": "ctrl+l c"
+        "mac": "ctrl+l c",
+        "when": "!terminalFocus"
       },
       {
         "command": "extension.openPrGitProvider",
         "key": "ctrl+l p",
-        "mac": "ctrl+l p"
+        "mac": "ctrl+l p",
+        "when": "!terminalFocus"
       }
     ],
     "menus": {

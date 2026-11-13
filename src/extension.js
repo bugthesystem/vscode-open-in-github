@@ -35,15 +35,15 @@ function getGitProviderLink(cb, fileFsPath, lines, pr) {
 
                 gitRev.branch(repoDir, function (branchErr, branch) {
                     // Check to see if the branch has a configured remote
-                    configuredBranch = config[`remote "${branch}"`];
+                    configuredBranch = config[`branch "${branch}"`] || config[`remote "${branch}"`];
 
-                    if (configuredBranch) {
+                    if (configuredBranch && configuredBranch.remote && config[`remote "${configuredBranch.remote}"`]) {
                         // Use the current branch's configured remote
                         remoteName = configuredBranch.remote;
                         rawUri = config[`remote "${remoteName}"`].url;
                     } else {
                         const remotes = Object.keys(config).filter(k => k.startsWith('remote '));
-                        if (remotes.length > 0) {
+                        if (remotes.length > 0 && config[remotes[0]]) {
                             rawUri = config[remotes[0]].url;
                         }
                     }

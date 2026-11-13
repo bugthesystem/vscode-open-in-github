@@ -16,6 +16,10 @@ class BaseProvider {
         return this.gitUrl.toString(providerProtocol).replace(/(\.git)$/, '');
     }
 
+    getTargetBranch(branch) {
+        return alwaysOpenInDefaultBranch ? defaultPrBranch : branch;
+    }
+
     /**
      * Get the Web URL.
      *
@@ -35,8 +39,8 @@ class BaseProvider {
 
 class GitHub extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
-        let blob = branch;
-        if (useCommitSHAInURL) {
+        let blob = this.getTargetBranch(branch);
+        if (useCommitSHAInURL && !alwaysOpenInDefaultBranch) {
             blob = this.sha;
         }
         if (filePath) {
@@ -51,22 +55,25 @@ class GitHub extends BaseProvider {
 
 class GitLab extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
-        if (filePath) {
-            return `${this.baseUrl}/blob/${branch}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '');
+        let blob = this.getTargetBranch(branch);
+        if (useCommitSHAInURL && !alwaysOpenInDefaultBranch) {
+            blob = this.sha;
         }
-        return `${this.baseUrl}/tree/${branch}`;
+        if (filePath) {
+            return `${this.baseUrl}/-/blob/${blob}` + (filePath ? `${filePath}` : '') + (line ? `#L${line}` : '') + (endLine ? `-${endLine}` : '');
+        }
+        return `${this.baseUrl}/-/tree/${blob}`;
     }
     prUrl(branch) {
-        //https://docs.gitlab.com/ee/api/merge_requests.html#create-mr
-        //`${this.baseUrl}/pull-requests/new?source_branch=${branch}&target_branch=${????}&title=${????}`
-        throw new Error(`Doesn't support Merge Request from URL in GitLab yet`);
+        return `${this.baseUrl}/-/merge_requests/new?merge_request[source_branch]=${encodeURIComponent(branch)}`;
     }
 }
 
 class Gitea extends BaseProvider {
     webUrl(branch, filePath, line, endLine) {
-        let blobPath = `branch/${branch}`;
-        if (useCommitSHAInURL) {
+        let targetBranch = this.getTargetBranch(branch);
+        let blobPath = `branch/${targetBranch}`;
+        if (useCommitSHAInURL && !alwaysOpenInDefaultBranch) {
             blobPath = `commit/${this.sha}`;
         }
         if (filePath) {
@@ -99,7 +106,7 @@ class VisualStudio extends BaseProvider {
 
     webUrl(branch, filePath, line, endLine) {
         let query = {
-            version: `GB${branch}`,
+            version: `GB${this.getTargetBranch(branch)}`,
         };
         if (filePath) {
             query['path'] = filePath;
